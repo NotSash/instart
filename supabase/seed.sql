@@ -7,19 +7,20 @@
 -- ═════════════════════════════════════════════
 -- 0. CLEANUP (Run every time to ensure fresh state)
 -- ═════════════════════════════════════════════
-DELETE FROM comments WHERE id::text LIKE 'cc000000%';
-DELETE FROM post_votes WHERE post_id::text LIKE 'e1000000%';
-DELETE FROM posts WHERE id::text LIKE 'e1000000%';
-DELETE FROM community_members WHERE community_id::text LIKE 'd1000000%';
-DELETE FROM communities WHERE id::text LIKE 'd1000000%';
-DELETE FROM match_scores WHERE founder_id::text LIKE 'a1000000%';
-DELETE FROM connections WHERE requester_id::text LIKE 'a1000000%' OR receiver_id::text LIKE 'a1000000%';
-DELETE FROM portfolio_investments WHERE investor_profile_id::text LIKE 'b1000000%';
-DELETE FROM cofounder_profiles WHERE id::text LIKE 'c1000000%';
-DELETE FROM investor_profiles WHERE id::text LIKE 'b1000000%';
-DELETE FROM founder_profiles WHERE id::text LIKE 'f1000000%';
-DELETE FROM profiles WHERE id::text LIKE 'a1000000%';
-DELETE FROM auth.users WHERE id::text LIKE 'a1000000%';
+-- Wipe test data from all tables before seeding
+DELETE FROM comments;
+DELETE FROM post_votes;
+DELETE FROM posts;
+DELETE FROM community_members;
+DELETE FROM communities;
+DELETE FROM match_scores;
+DELETE FROM connections;
+DELETE FROM portfolio_investments;
+DELETE FROM cofounder_profiles;
+DELETE FROM investor_profiles;
+DELETE FROM founder_profiles;
+DELETE FROM profiles WHERE id::text LIKE 'a1000000%'; -- Only delete test auth profiles
+DELETE FROM auth.users WHERE id::text LIKE 'a1000000%'; -- Only delete test auth users
 
 
 -- ─────────── FAKE AUTH USERS ───────────
@@ -201,7 +202,7 @@ INSERT INTO communities (id, name, slug, description, category, member_count, is
   ('d1000000-0000-0000-0000-000000000005', 'Show & Tell', 'show-and-tell',
    'Launch your product, share milestones, and get feedback from the community.',
    'Showcase', 5, false)
-ON CONFLICT DO NOTHING;
+ON CONFLICT (id) DO NOTHING;
 
 
 -- ─────────── COMMUNITY MEMBERS ───────────
