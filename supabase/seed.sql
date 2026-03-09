@@ -237,7 +237,7 @@ INSERT INTO posts (id, author_id, community_id, type, title, content, upvotes, d
    'a1000000-0000-0000-0000-000000000005', 'd1000000-0000-0000-0000-000000000001', 'ask',
    'How do you evaluate a potential co-founder?',
    'I''m actively looking for a business co-founder for my B2B SaaS idea. I''ve met a few people but I''m unsure how to evaluate the fit beyond just skills. Those who''ve found co-founders: what was your process? Any red flags to watch out for? How long did you work together before making it official?',
-   8, 0, 2, now() - interval '3 days'),
+   8, 0, 2, now() - interval '3 days'), 
 
   -- Fundraising
   ('e1000000-0000-0000-0000-000000000003',
