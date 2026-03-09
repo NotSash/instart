@@ -2,7 +2,9 @@
 
 import { create } from 'zustand'
 import { createClient } from '@/lib/supabase/client'
-import type { Profile } from '@/lib/supabase/database.types'
+import type { Tables } from '@/lib/supabase/database.types'
+
+type Profile = Tables<'profiles'>
 import type { User } from '@supabase/supabase-js'
 
 interface AuthState {

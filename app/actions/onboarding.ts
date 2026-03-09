@@ -2,7 +2,11 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import type { StartupStage, FundingRoundType, CommitmentLevel } from '@/lib/supabase/database.types'
+import type { Enums } from '@/lib/supabase/database.types'
+
+type StartupStage = Enums<'startup_stage'>
+type FundingRoundType = Enums<'funding_round_type'>
+type CommitmentLevel = Enums<'commitment_level'>
 
 // ─── Helper to parse numeric strings (can be currency amounts) ───
 function parseAmount(val: string | undefined): number | null {

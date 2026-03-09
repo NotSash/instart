@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/supabase/database.types'
 
 // ═══════════════════════════════════════════════════════════════
 // FETCH NOTIFICATIONS
@@ -29,7 +30,7 @@ export async function fetchNotifications(filter?: string) {
         }
         const types = typeMap[filter]
         if (types) {
-            query = query.in('type', types)
+            query = query.in('type', types as Database["public"]["Enums"]["notification_type"][])
         }
     }
 

@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import type { Database } from '@/lib/supabase/database.types'
 import { queryKeys } from '@/lib/queryKeys'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -34,7 +35,7 @@ export function useNotifications(filter?: string) {
                     activity: ['post_upvoted', 'profile_viewed', 'deal_room_invite', 'deal_room_update'],
                 }
                 if (typeMap[filter]) {
-                    query = query.in('type', typeMap[filter])
+                    query = query.in('type', typeMap[filter] as Database["public"]["Enums"]["notification_type"][])
                 }
             }
 

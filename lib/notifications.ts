@@ -1,5 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
-import type { NotificationType } from '@/lib/supabase/database.types'
+import type { Enums } from '@/lib/supabase/database.types'
+
+type NotificationType = Enums<'notification_type'>
 
 interface CreateNotificationParams {
     userId: string

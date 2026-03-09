@@ -1,7 +1,9 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { PostType } from '@/lib/supabase/database.types'
+import type { Enums } from '@/lib/supabase/database.types'
+
+type PostType = Enums<'post_type'>
 
 // ═══════════════════════════════════════════════════════════════
 // FETCH POSTS (with author profile and community info)
@@ -122,14 +124,11 @@ export async function voteOnPost(postId: string, vote: number) {
         await supabase.from('post_votes').delete().eq('id', existingVote.id)
         // Update the post counters
         if (oldVote === 1) {
-            await supabase.rpc('decrement_upvotes', { post_id_input: postId }).catch(() => {
-                // Fallback: manual update
-                return supabase.from('posts').update({ upvotes: 0 }).eq('id', postId)
-            })
+            const { data: p } = await supabase.from('posts').select('upvotes').eq('id', postId).single()
+            if (p) await supabase.from('posts').update({ upvotes: Math.max(0, p.upvotes - 1) }).eq('id', postId)
         } else if (oldVote === -1) {
-            await supabase.rpc('decrement_downvotes', { post_id_input: postId }).catch(() => {
-                return supabase.from('posts').update({ downvotes: 0 }).eq('id', postId)
-            })
+            const { data: p } = await supabase.from('posts').select('downvotes').eq('id', postId).single()
+            if (p) await supabase.from('posts').update({ downvotes: Math.max(0, p.downvotes - 1) }).eq('id', postId)
         }
         return { error: null }
     }

@@ -4,7 +4,8 @@ import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tansta
 import { createClient } from '@/lib/supabase/client'
 import { queryKeys } from '@/lib/queryKeys'
 import { useAuthStore } from '@/stores/authStore'
-import type { PostWithAuthor } from '@/lib/supabase/database.types'
+
+
 
 // ═══════════════════════════════════════════════════════════════
 // FEED POSTS (infinite scroll)

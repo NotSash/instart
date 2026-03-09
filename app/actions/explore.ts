@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/supabase/database.types'
 
 // ═══════════════════════════════════════════════════════════════
 // FETCH STARTUPS (founder_profiles + profiles)
@@ -31,7 +32,7 @@ export async function fetchStartups(options?: {
         query = query.overlaps('sectors', sectors)
     }
     if (stages && stages.length > 0) {
-        query = query.in('stage', stages)
+        query = query.in('stage', stages as Database["public"]["Enums"]["startup_stage"][])
     }
 
     const { data, error, count } = await query
@@ -115,7 +116,7 @@ export async function fetchCofounders(options?: {
         query = query.overlaps('preferred_sectors', sectors)
     }
     if (commitment) {
-        query = query.eq('commitment', commitment)
+        query = query.eq('commitment', commitment as Database["public"]["Enums"]["commitment_level"])
     }
 
     const { data, error } = await query

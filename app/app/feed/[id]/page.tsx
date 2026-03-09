@@ -33,7 +33,7 @@ export default function PostDetailPage() {
     const postId = params.id as string
     const [post, setPost] = useState<DataRow>(null)
     const [comments, setComments] = useState<DataRow[]>([])
-    const [userVote, setUserVote] = useState<string | null>(null)
+    const [userVote, setUserVote] = useState<number | null>(null)
     const [isSaved, setIsSaved] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [commentText, setCommentText] = useState('')
@@ -55,12 +55,13 @@ export default function PostDetailPage() {
 
     const handleVote = async (vote: 'up' | 'down') => {
         if (!post) return
-        const newVote = userVote === vote ? null : vote
-        const upDelta = (newVote === 'up' ? 1 : 0) - (userVote === 'up' ? 1 : 0)
-        const downDelta = (newVote === 'down' ? 1 : 0) - (userVote === 'down' ? 1 : 0)
+        const voteNum = vote === 'up' ? 1 : -1
+        const newVote = userVote === voteNum ? null : voteNum
+        const upDelta = (newVote === 1 ? 1 : 0) - (userVote === 1 ? 1 : 0)
+        const downDelta = (newVote === -1 ? 1 : 0) - (userVote === -1 ? 1 : 0)
         setPost((p: DataRow) => ({ ...p, upvotes: p.upvotes + upDelta, downvotes: p.downvotes + downDelta }))
         setUserVote(newVote)
-        await voteOnPost(postId, vote)
+        await voteOnPost(postId, voteNum)
     }
 
     const handleToggleSave = async () => {
@@ -113,11 +114,11 @@ export default function PostDetailPage() {
                     <div className="flex gap-4">
                         {/* Vote */}
                         <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
-                            <button onClick={() => handleVote('up')} className={`p-1 rounded-lg transition-colors ${userVote === 'up' ? 'text-emerald-400 bg-emerald-500/10' : 'text-muted-foreground hover:text-foreground'}`}>
+                            <button onClick={() => handleVote('up')} className={`p-1 rounded-lg transition-colors ${userVote === 1 ? 'text-emerald-400 bg-emerald-500/10' : 'text-muted-foreground hover:text-foreground'}`}>
                                 <ArrowBigUp className="w-6 h-6" />
                             </button>
                             <span className={`text-sm font-semibold ${score > 0 ? 'text-emerald-400' : score < 0 ? 'text-red-400' : 'text-muted-foreground'}`}>{score}</span>
-                            <button onClick={() => handleVote('down')} className={`p-1 rounded-lg transition-colors ${userVote === 'down' ? 'text-red-400 bg-red-500/10' : 'text-muted-foreground hover:text-foreground'}`}>
+                            <button onClick={() => handleVote('down')} className={`p-1 rounded-lg transition-colors ${userVote === -1 ? 'text-red-400 bg-red-500/10' : 'text-muted-foreground hover:text-foreground'}`}>
                                 <ArrowBigDown className="w-6 h-6" />
                             </button>
                         </div>

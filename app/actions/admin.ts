@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import type { Database } from '@/lib/supabase/database.types'
 
 // ═══════════════════════════════════════════════════════════════
 // FETCH ADMIN STATS
@@ -98,9 +99,9 @@ export async function createNotification(userId: string, type: string, title: st
     const admin = createAdminClient()
     const { error } = await admin.from('notifications').insert({
         user_id: userId,
-        type,
+        type: type as Database["public"]["Enums"]["notification_type"],
         title,
-        body: body || null,
+        message: body || null,
         link: link || null,
     })
     return { error: error?.message || null }

@@ -2,13 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { createClient } from '@/lib/supabase/client'
+import type { Database } from '@/lib/supabase/database.types'
 import { queryKeys } from '@/lib/queryKeys'
 
 // ═══════════════════════════════════════════════════════════════
 // EXPLORE STARTUPS
 // ═══════════════════════════════════════════════════════════════
 
-interface StartupFilters {
+type StartupFilters = {
     sectors?: string[]
     stage?: string
     is_raising?: boolean
@@ -34,7 +35,7 @@ export function useExploreStartups(filters: StartupFilters = {}) {
                 query = query.overlaps('sectors', filters.sectors)
             }
             if (filters.stage) {
-                query = query.eq('stage', filters.stage)
+                query = query.eq('stage', filters.stage as Database["public"]["Enums"]["startup_stage"])
             }
             if (filters.is_raising !== undefined) {
                 query = query.eq('is_raising', filters.is_raising)
@@ -68,7 +69,7 @@ export function useExploreStartups(filters: StartupFilters = {}) {
 // EXPLORE INVESTORS
 // ═══════════════════════════════════════════════════════════════
 
-interface InvestorFilters {
+type InvestorFilters = {
     sectors?: string[]
     stages?: string[]
     is_verified?: boolean
@@ -123,7 +124,7 @@ export function useExploreInvestors(filters: InvestorFilters = {}) {
 // EXPLORE COFOUNDERS
 // ═══════════════════════════════════════════════════════════════
 
-interface CofounderFilters {
+type CofounderFilters = {
     skills?: string[]
     commitment?: string
     has_idea?: boolean
@@ -147,7 +148,7 @@ export function useExploreCoFounders(filters: CofounderFilters = {}) {
                 query = query.overlaps('skills', filters.skills)
             }
             if (filters.commitment) {
-                query = query.eq('commitment', filters.commitment)
+                query = query.eq('commitment', filters.commitment as Database["public"]["Enums"]["commitment_level"])
             }
             if (filters.has_idea !== undefined) {
                 query = query.eq('has_idea', filters.has_idea)
