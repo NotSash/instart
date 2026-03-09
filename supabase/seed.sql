@@ -23,7 +23,7 @@ DELETE FROM profiles WHERE id::text LIKE 'a1000000%'; -- Only delete test auth p
 DELETE FROM auth.users WHERE id::text LIKE 'a1000000%'; -- Only delete test auth users
 
 
--- ─────────── FAKE AUTH USERS ───────────
+-- ─────────── FAKE AUTH USERS ─────────── 
 -- We create entries in auth.users so that profiles can reference them.
 -- These are NOT real logins — just placeholder UUIDs for test data.
 
