@@ -55,13 +55,21 @@ export default function PostDetailPage() {
 
     const handleVote = async (vote: 'up' | 'down') => {
         if (!post) return
+        const prevPost = post
+        const prevUserVote = userVote
         const voteNum = vote === 'up' ? 1 : -1
         const newVote = userVote === voteNum ? null : voteNum
         const upDelta = (newVote === 1 ? 1 : 0) - (userVote === 1 ? 1 : 0)
         const downDelta = (newVote === -1 ? 1 : 0) - (userVote === -1 ? 1 : 0)
         setPost((p: DataRow) => ({ ...p, upvotes: p.upvotes + upDelta, downvotes: p.downvotes + downDelta }))
         setUserVote(newVote)
-        await voteOnPost(postId, newVote ?? 0)
+        try {
+            await voteOnPost(postId, newVote ?? 0)
+        } catch (err) {
+            setPost(prevPost)
+            setUserVote(prevUserVote)
+            console.error('Vote failed, rolling back:', err)
+        }
     }
 
     const handleToggleSave = async () => {
