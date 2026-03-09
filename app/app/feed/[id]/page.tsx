@@ -61,7 +61,7 @@ export default function PostDetailPage() {
         const downDelta = (newVote === -1 ? 1 : 0) - (userVote === -1 ? 1 : 0)
         setPost((p: DataRow) => ({ ...p, upvotes: p.upvotes + upDelta, downvotes: p.downvotes + downDelta }))
         setUserVote(newVote)
-        await voteOnPost(postId, voteNum)
+        await voteOnPost(postId, newVote ?? 0)
     }
 
     const handleToggleSave = async () => {
