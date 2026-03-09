@@ -43,7 +43,7 @@ export async function fetchBlogPosts(tag?: string) {
     let query = supabase
         .from('blog_posts')
         .select(`
-            id, title, slug, excerpt, cover_image_url, tags, published_at,
+            id, title, slug, excerpt, cover_image_url, category, published_at,
             author:author_id ( id, full_name, avatar_url )
         `)
         .eq('is_published', true)
@@ -51,7 +51,7 @@ export async function fetchBlogPosts(tag?: string) {
         .limit(20)
 
     if (tag) {
-        query = query.contains('tags', [tag])
+        query = query.eq('category', tag)
     }
 
     const { data, error } = await query
@@ -76,14 +76,6 @@ export async function fetchBlogPost(slug: string) {
         .single()
 
     if (error) return { post: null, error: error.message }
-
-    // Increment view count
-    if (data) {
-        await supabase
-            .from('blog_posts')
-            .update({ view_count: (data.view_count || 0) + 1 })
-            .eq('id', data.id)
-    }
 
     return { post: data, error: null }
 }
@@ -142,7 +134,7 @@ export async function fetchSinglePost(postId: string) {
         .select(`
             *,
             author:author_id ( id, full_name, avatar_url, role ),
-            community:community_id ( id, name, slug, icon )
+            community:community_id ( id, name, slug, icon_url )
         `)
         .eq('id', postId)
         .single()
@@ -197,7 +189,7 @@ export async function addComment(postId: string, content: string, parentId?: str
             post_id: postId,
             author_id: user.id,
             content: content.trim(),
-            parent_id: parentId || null,
+            parent_comment_id: parentId || null,
         })
         .select(`
             *,
@@ -226,7 +218,7 @@ export async function fetchStartupsForCompare(search?: string) {
         .from('founder_profiles')
         .select(`
             id, user_id, startup_name, sectors, stage, team_size, total_raised,
-            health_score, founded_year,
+            health_score,
             profile:user_id ( id, full_name, city, is_verified )
         `)
         .order('health_score', { ascending: false, nullsFirst: false })

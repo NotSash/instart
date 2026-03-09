@@ -72,7 +72,7 @@ export default function BlogPage() {
                             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                                 <Link href={`/blog/${featured.slug}`} className="block glass-card p-6 md:p-8 mb-10 group hover:border-white/10 transition-all">
                                     <div className="flex items-center gap-2 mb-3">
-                                        {featured.tags?.[0] && <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">{featured.tags[0]}</span>}
+                                        {featured.category && <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">{featured.category}</span>}
                                         <span className="text-xs text-muted-foreground">Featured</span>
                                     </div>
                                     <h2 className="text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-emerald-400 transition-colors leading-snug">{featured.title}</h2>
@@ -91,7 +91,7 @@ export default function BlogPage() {
                             {rest.map((post: DataRow, i: number) => (
                                 <motion.div key={post.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.05 }}>
                                     <Link href={`/blog/${post.slug}`} className="block glass-card p-5 h-full group hover:border-white/10 transition-all">
-                                        {post.tags?.[0] && <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-white/5 text-muted-foreground border border-white/5 mb-3 inline-block">{post.tags[0]}</span>}
+                                        {post.category && <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-white/5 text-muted-foreground border border-white/5 mb-3 inline-block">{post.category}</span>}
                                         <h3 className="text-base font-semibold text-foreground mb-2 group-hover:text-emerald-400 transition-colors leading-snug line-clamp-2">{post.title}</h3>
                                         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
                                         <div className="flex items-center justify-between text-xs text-muted-foreground mt-auto">

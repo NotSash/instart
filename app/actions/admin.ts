@@ -13,7 +13,7 @@ export async function fetchAdminStats() {
         admin.from('profiles').select('id', { count: 'exact', head: true }),
         admin.from('posts').select('id', { count: 'exact', head: true }),
         admin.from('communities').select('id', { count: 'exact', head: true }),
-        admin.from('reports').select('id', { count: 'exact', head: true }).eq('moderation_status', 'pending'),
+        admin.from('reports').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
     ])
 
     // Roles breakdown
@@ -67,7 +67,7 @@ export async function fetchPendingReports() {
             *,
             reporter:reporter_id ( id, full_name, email )
         `)
-        .eq('moderation_status', 'pending')
+        .eq('status', 'pending')
         .order('created_at', { ascending: false })
         .limit(50)
 
@@ -85,7 +85,7 @@ export async function resolveReport(reportId: string, status: string) {
     const admin = createAdminClient()
     const { error } = await admin
         .from('reports')
-        .update({ moderation_status: status, moderator_id: user.id, resolved_at: new Date().toISOString() })
+        .update({ status: status as 'pending' | 'approved' | 'rejected', reviewed_by: user.id, reviewed_at: new Date().toISOString() })
         .eq('id', reportId)
 
     return { error: error?.message || null }

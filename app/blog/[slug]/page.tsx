@@ -54,7 +54,7 @@ export default function BlogPostPage() {
                     </div>
                 ) : (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                        {post.tags?.[0] && <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">{post.tags[0]}</span>}
+                        {post.category && <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">{post.category}</span>}
                         <h1 className="text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6 leading-tight" style={{ letterSpacing: '-0.02em' }}>{post.title}</h1>
 
                         <div className="flex items-center justify-between pb-6 mb-8 border-b border-white/5">

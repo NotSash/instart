@@ -51,8 +51,8 @@ export function AppLayout({ children, currentPage, userRole }: AppLayoutProps) {
             setUserAvatar(profile.avatar_url || '')
           }
         }
-        const count = await getUnreadCount()
-        setUnreadCount(count)
+        const result = await getUnreadCount()
+        setUnreadCount(typeof result === 'number' ? result : result?.count || 0)
       } catch {
         // silently fail on non-critical context load
       }

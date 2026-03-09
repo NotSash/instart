@@ -480,6 +480,12 @@ export interface Database {
             startup_updates: { Row: StartupUpdate; Insert: Partial<StartupUpdate> & Pick<StartupUpdate, 'founder_profile_id' | 'title' | 'content'>; Update: Partial<StartupUpdate>; Relationships: [] }
             newsletter_subscribers: { Row: NewsletterSubscriber; Insert: Partial<NewsletterSubscriber> & Pick<NewsletterSubscriber, 'email'>; Update: Partial<NewsletterSubscriber>; Relationships: [] }
         }
+        Views: {
+            [_ in never]: never
+        }
+        Functions: {
+            [_ in never]: never
+        }
         Enums: {
             user_role: UserRole
             startup_stage: StartupStage
@@ -494,6 +500,9 @@ export interface Database {
             moderation_status: ModerationStatus
             investment_outcome: InvestmentOutcome
             commitment_level: CommitmentLevel
+        }
+        CompositeTypes: {
+            [_ in never]: never
         }
     }
 }
