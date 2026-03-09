@@ -7,19 +7,19 @@
 -- ═════════════════════════════════════════════
 -- 0. CLEANUP (Run every time to ensure fresh state)
 -- ═════════════════════════════════════════════
-DELETE FROM comments WHERE id LIKE 'cc000000%';
-DELETE FROM post_votes WHERE post_id LIKE 'e1000000%';
-DELETE FROM posts WHERE id LIKE 'e1000000%';
-DELETE FROM community_members WHERE community_id LIKE 'd1000000%';
-DELETE FROM communities WHERE id LIKE 'd1000000%';
-DELETE FROM match_scores WHERE founder_id LIKE 'a1000000%';
-DELETE FROM connections WHERE requester_id LIKE 'a1000000%' OR receiver_id LIKE 'a1000000%';
-DELETE FROM portfolio_investments WHERE investor_profile_id LIKE 'b1000000%';
-DELETE FROM cofounder_profiles WHERE id LIKE 'c1000000%';
-DELETE FROM investor_profiles WHERE id LIKE 'b1000000%';
-DELETE FROM founder_profiles WHERE id LIKE 'f1000000%';
-DELETE FROM profiles WHERE id LIKE 'a1000000%';
-DELETE FROM auth.users WHERE id LIKE 'a1000000%';
+DELETE FROM comments WHERE id::text LIKE 'cc000000%';
+DELETE FROM post_votes WHERE post_id::text LIKE 'e1000000%';
+DELETE FROM posts WHERE id::text LIKE 'e1000000%';
+DELETE FROM community_members WHERE community_id::text LIKE 'd1000000%';
+DELETE FROM communities WHERE id::text LIKE 'd1000000%';
+DELETE FROM match_scores WHERE founder_id::text LIKE 'a1000000%';
+DELETE FROM connections WHERE requester_id::text LIKE 'a1000000%' OR receiver_id::text LIKE 'a1000000%';
+DELETE FROM portfolio_investments WHERE investor_profile_id::text LIKE 'b1000000%';
+DELETE FROM cofounder_profiles WHERE id::text LIKE 'c1000000%';
+DELETE FROM investor_profiles WHERE id::text LIKE 'b1000000%';
+DELETE FROM founder_profiles WHERE id::text LIKE 'f1000000%';
+DELETE FROM profiles WHERE id::text LIKE 'a1000000%';
+DELETE FROM auth.users WHERE id::text LIKE 'a1000000%';
 
 
 -- ─────────── FAKE AUTH USERS ───────────
