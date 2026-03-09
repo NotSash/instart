@@ -13,16 +13,27 @@ import { createClient } from "@/lib/supabase/client"
 // ═══════════════════════════════════════════════════════════════
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleGoogleLogin = async () => {
     setIsLoading(true)
-    const supabase = createClient()
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
+    setErrorMessage("")
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+      if (error) {
+        setErrorMessage(error.message)
+      }
+    } catch {
+      setErrorMessage("Something went wrong. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const containerVariants = {
@@ -110,10 +121,10 @@ export default function LoginPage() {
           {/* Header */}
           <motion.div variants={itemVariants} className="mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2" style={{ letterSpacing: "-0.02em" }}>
-              Welcome back
+              Sign in to Instart
             </h1>
             <p className="text-muted-foreground">
-              Sign in to continue building the future
+              Continue building the future
             </p>
           </motion.div>
 
@@ -141,6 +152,17 @@ export default function LoginPage() {
             </Button>
           </motion.div>
 
+          {/* Error message */}
+          {errorMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center"
+            >
+              {errorMessage}
+            </motion.div>
+          )}
+
           {/* Trust signals */}
           <motion.div variants={itemVariants} className="mt-8 space-y-4">
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -163,15 +185,7 @@ export default function LoginPage() {
             </div>
           </motion.div>
 
-          {/* Footer links */}
-          <motion.div variants={itemVariants} className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              Don&apos;t have an account?{" "}
-              <Link href="/signup" className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
-                Sign up
-              </Link>
-            </p>
-          </motion.div>
+
 
           {/* Legal */}
           <motion.p variants={itemVariants} className="mt-6 text-xs text-muted-foreground text-center leading-relaxed">
