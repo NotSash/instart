@@ -4,6 +4,24 @@
 -- Delete this file after testing
 -- ═══════════════════════════════════════════════════════════════
 
+-- ═════════════════════════════════════════════
+-- 0. CLEANUP (Run every time to ensure fresh state)
+-- ═════════════════════════════════════════════
+DELETE FROM comments WHERE id LIKE 'cc000000%';
+DELETE FROM post_votes WHERE post_id LIKE 'e1000000%';
+DELETE FROM posts WHERE id LIKE 'e1000000%';
+DELETE FROM community_members WHERE community_id LIKE 'd1000000%';
+DELETE FROM communities WHERE id LIKE 'd1000000%';
+DELETE FROM match_scores WHERE founder_id LIKE 'a1000000%';
+DELETE FROM connections WHERE requester_id LIKE 'a1000000%' OR receiver_id LIKE 'a1000000%';
+DELETE FROM portfolio_investments WHERE investor_profile_id LIKE 'b1000000%';
+DELETE FROM cofounder_profiles WHERE id LIKE 'c1000000%';
+DELETE FROM investor_profiles WHERE id LIKE 'b1000000%';
+DELETE FROM founder_profiles WHERE id LIKE 'f1000000%';
+DELETE FROM profiles WHERE id LIKE 'a1000000%';
+DELETE FROM auth.users WHERE id LIKE 'a1000000%';
+
+
 -- ─────────── FAKE AUTH USERS ───────────
 -- We create entries in auth.users so that profiles can reference them.
 -- These are NOT real logins — just placeholder UUIDs for test data.
@@ -419,21 +437,6 @@ INSERT INTO match_scores (founder_id, investor_id, score, factors) VALUES
 ON CONFLICT (founder_id, investor_id) DO NOTHING;
 
 
--- ═════════════════════════════════════════════
--- CLEANUP SCRIPT (run this to remove all seed data)
--- ═════════════════════════════════════════════
--- Uncomment and run the block below to delete all seed data:
---
--- DELETE FROM comments WHERE id LIKE 'cc000000%';
--- DELETE FROM post_votes WHERE post_id LIKE 'e1000000%';
--- DELETE FROM posts WHERE id LIKE 'e1000000%';
--- DELETE FROM community_members WHERE community_id LIKE 'd1000000%';
--- DELETE FROM communities WHERE id LIKE 'd1000000%';
--- DELETE FROM match_scores WHERE founder_id LIKE 'a1000000%';
--- DELETE FROM connections WHERE requester_id LIKE 'a1000000%' OR receiver_id LIKE 'a1000000%';
--- DELETE FROM portfolio_investments WHERE investor_profile_id LIKE 'b1000000%';
--- DELETE FROM cofounder_profiles WHERE id LIKE 'c1000000%';
--- DELETE FROM investor_profiles WHERE id LIKE 'b1000000%';
--- DELETE FROM founder_profiles WHERE id LIKE 'f1000000%';
--- DELETE FROM profiles WHERE id LIKE 'a1000000%';
--- DELETE FROM auth.users WHERE id LIKE 'a1000000%';
+-- ═══════════════════════════════════════════════════════════════
+-- END OF SEED SCRIPT
+-- ═══════════════════════════════════════════════════════════════
