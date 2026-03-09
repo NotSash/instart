@@ -109,7 +109,7 @@ ON CONFLICT (id) DO NOTHING;
 -- ─────────── INVESTOR PROFILES ───────────
 
 INSERT INTO investor_profiles (id, user_id, professional_title, sectors_of_interest, preferred_stages, min_check_size, max_check_size, total_investments, investment_thesis, is_actively_investing, open_to_mentoring) VALUES
-  ('i1000000-0000-0000-0000-000000000001',
+  ('b1000000-0000-0000-0000-000000000001',
    'a1000000-0000-0000-0000-000000000003',
    'Partner, Horizon Ventures',
    ARRAY['Fintech', 'SaaS', 'HealthTech', 'AI/ML'],
@@ -118,7 +118,7 @@ INSERT INTO investor_profiles (id, user_id, professional_title, sectors_of_inter
    'We back bold founders solving India-specific problems with global potential. Looking for startups with strong unit economics, clear moats, and teams with deep domain expertise. Prefer B2B models with recurring revenue.',
    true, true),
 
-  ('i1000000-0000-0000-0000-000000000002',
+  ('b1000000-0000-0000-0000-000000000002',
    'a1000000-0000-0000-0000-000000000004',
    'Angel Investor & Advisor',
    ARRAY['AI/ML', 'Deep Tech', 'Developer Tools', 'Climate Tech'],
@@ -158,11 +158,11 @@ ON CONFLICT (id) DO NOTHING;
 -- ─────────── PORTFOLIO INVESTMENTS ───────────
 
 INSERT INTO portfolio_investments (investor_profile_id, startup_name, year, outcome, notes) VALUES
-  ('i1000000-0000-0000-0000-000000000001', 'QuickReach (logistics)', 2022, 'acquired', 'Acquired by Delhivery for ₹80Cr'),
-  ('i1000000-0000-0000-0000-000000000001', 'MedVault (healthtech)', 2023, 'active', 'Series A stage, growing 20% MoM'),
-  ('i1000000-0000-0000-0000-000000000001', 'CloudKitchen Pro', 2021, 'exited', '5x return in 2 years'),
-  ('i1000000-0000-0000-0000-000000000002', 'CodeBridge (devtools)', 2023, 'active', 'Strong developer adoption, 10K MAU'),
-  ('i1000000-0000-0000-0000-000000000002', 'GreenCharge (climate)', 2024, 'active', 'Pre-seed, building EV charging infra');
+  ('b1000000-0000-0000-0000-000000000001', 'QuickReach (logistics)', 2022, 'acquired', 'Acquired by Delhivery for ₹80Cr'),
+  ('b1000000-0000-0000-0000-000000000001', 'MedVault (healthtech)', 2023, 'active', 'Series A stage, growing 20% MoM'),
+  ('b1000000-0000-0000-0000-000000000001', 'CloudKitchen Pro', 2021, 'exited', '5x return in 2 years'),
+  ('b1000000-0000-0000-0000-000000000002', 'CodeBridge (devtools)', 2023, 'active', 'Strong developer adoption, 10K MAU'),
+  ('b1000000-0000-0000-0000-000000000002', 'GreenCharge (climate)', 2024, 'active', 'Pre-seed, building EV charging infra');
 
 
 -- ─────────── COMMUNITIES ───────────
@@ -431,9 +431,9 @@ ON CONFLICT (founder_id, investor_id) DO NOTHING;
 -- DELETE FROM communities WHERE id LIKE 'd1000000%';
 -- DELETE FROM match_scores WHERE founder_id LIKE 'a1000000%';
 -- DELETE FROM connections WHERE requester_id LIKE 'a1000000%' OR receiver_id LIKE 'a1000000%';
--- DELETE FROM portfolio_investments WHERE investor_profile_id LIKE 'i1000000%';
+-- DELETE FROM portfolio_investments WHERE investor_profile_id LIKE 'b1000000%';
 -- DELETE FROM cofounder_profiles WHERE id LIKE 'c1000000%';
--- DELETE FROM investor_profiles WHERE id LIKE 'i1000000%';
+-- DELETE FROM investor_profiles WHERE id LIKE 'b1000000%';
 -- DELETE FROM founder_profiles WHERE id LIKE 'f1000000%';
 -- DELETE FROM profiles WHERE id LIKE 'a1000000%';
 -- DELETE FROM auth.users WHERE id LIKE 'a1000000%';
