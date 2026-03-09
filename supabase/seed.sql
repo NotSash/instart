@@ -183,7 +183,7 @@ INSERT INTO communities (id, name, slug, description, category, member_count, is
   ('d1000000-0000-0000-0000-000000000005', 'Show & Tell', 'show-and-tell',
    'Launch your product, share milestones, and get feedback from the community.',
    'Showcase', 5, false)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (slug) DO NOTHING;
 
 
 -- ─────────── COMMUNITY MEMBERS ───────────
