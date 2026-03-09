@@ -72,18 +72,12 @@ export function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-4">
-          <Link
-            href="/login"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Log in
-          </Link>
+        <div className="hidden md:flex items-center">
           <Button
             asChild
             className="bg-emerald-500 hover:bg-emerald-600 text-black font-medium px-5 h-10 rounded-full transition-all hover:scale-[1.03] active:scale-[0.97]"
           >
-            <Link href="/signup">Get Started</Link>
+            <Link href="/login">Get Started</Link>
           </Button>
         </div>
 
@@ -143,18 +137,11 @@ export function Navbar() {
                 transition={{ delay: 0.3 }}
                 className="mt-12 flex flex-col gap-4"
               >
-                <Link
-                  href="/login"
-                  className="text-lg text-muted-foreground hover:text-foreground transition-colors py-3"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Log in
-                </Link>
                 <Button
                   asChild
                   className="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold w-full h-14 rounded-full text-base"
                 >
-                  <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                     Get Started
                   </Link>
                 </Button>
