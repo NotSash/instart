@@ -86,25 +86,19 @@ export default function CofounderOnboarding() {
     const progress = (step / TOTAL_STEPS) * 100
 
     const validateStep = (): string | null => {
-        if (step === 1) {
-            if (!status) return 'Please select your current status'
-            if (!city) return 'Please select your city'
+        const validators: Record<number, () => string | null> = {
+            1: () => (!status ? 'Please select your current status' : !city ? 'Please select your city' : null),
+            2: () => (mySkills.length === 0 ? 'Please select at least one skill' : !experience.trim() ? 'Please describe your experience' : null),
+            3: () => {
+                if (wantedSkills.length === 0) return 'Please select at least one skill you\'re looking for'
+                if (!commitment) return 'Please select your commitment level'
+                if (hasIdea === null) return 'Please indicate if you have a startup idea'
+                if (hasIdea && !ideaDescription.trim()) return 'Please describe your idea'
+                return null
+            },
+            4: () => (selectedSectors.length === 0 ? 'Please select at least one sector' : !equityPref ? 'Please select your equity preference' : null)
         }
-        if (step === 2) {
-            if (mySkills.length === 0) return 'Please select at least one skill'
-            if (!experience.trim()) return 'Please describe your experience'
-        }
-        if (step === 3) {
-            if (wantedSkills.length === 0) return 'Please select at least one skill you\'re looking for'
-            if (!commitment) return 'Please select your commitment level'
-            if (hasIdea === null) return 'Please indicate if you have a startup idea'
-            if (hasIdea && !ideaDescription.trim()) return 'Please describe your idea'
-        }
-        if (step === 4) {
-            if (selectedSectors.length === 0) return 'Please select at least one sector'
-            if (!equityPref) return 'Please select your equity preference'
-        }
-        return null
+        return validators[step]?.() || null
     }
 
     const goNext = () => {

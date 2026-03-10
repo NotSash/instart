@@ -73,22 +73,26 @@ export default function FounderOnboarding() {
   const [validationError, setValidationError] = useState('')
 
   const validateStep = (): string | null => {
-    if (step === 1 && !city) return 'Please select your city'
-    if (step === 2) {
-      if (!startupName.trim()) return 'Please enter your startup name'
-      if (!pitch.trim()) return 'Please enter your one-line pitch'
-      if (selectedSectors.length === 0) return 'Please select at least one sector'
+    const validators: Record<number, () => string | null> = {
+      1: () => (!city ? 'Please select your city' : null),
+      2: () => {
+        if (!startupName.trim()) return 'Please enter your startup name'
+        if (!pitch.trim()) return 'Please enter your one-line pitch'
+        if (selectedSectors.length === 0) return 'Please select at least one sector'
+        return null
+      },
+      3: () => (!selectedStage ? 'Please select your startup stage' : null),
+      4: () => {
+        if (isRaising === null) return 'Please indicate if you are currently raising'
+        if (isRaising && !raiseAmount.trim()) return 'Please enter how much you are looking to raise'
+        if (isRaising && roundType.length === 0) return 'Please select the type of round'
+        if (hasRaisedBefore === null) return 'Please indicate if you have raised before'
+        if (hasRaisedBefore && !previousRaise.trim()) return 'Please enter how much you have raised in total'
+        return null
+      },
+      5: () => (selectedInvestorTypes.length === 0 ? 'Please select at least one investor type' : null),
     }
-    if (step === 3 && !selectedStage) return 'Please select your startup stage'
-    if (step === 4) {
-      if (isRaising === null) return 'Please indicate if you are currently raising'
-      if (isRaising && !raiseAmount.trim()) return 'Please enter how much you are looking to raise'
-      if (isRaising && roundType.length === 0) return 'Please select the type of round'
-      if (hasRaisedBefore === null) return 'Please indicate if you have raised before'
-      if (hasRaisedBefore && !previousRaise.trim()) return 'Please enter how much you have raised in total'
-    }
-    if (step === 5 && selectedInvestorTypes.length === 0) return 'Please select at least one investor type'
-    return null
+    return validators[step]?.() || null
   }
 
   const goNext = () => {
