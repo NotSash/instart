@@ -107,24 +107,27 @@ export function Hero() {
         </motion.p>
 
         {/* CTA buttons */}
-        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 mb-4 px-4">
+        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-5 mb-6 px-4">
           <Button
             asChild
             size="lg"
-            className="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 md:px-8 h-12 md:h-14 rounded-full text-sm md:text-base transition-all hover:scale-[1.03] active:scale-[0.97] glow-emerald-sm w-full sm:w-auto"
+            className="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-8 md:px-10 h-13 md:h-15 rounded-full text-sm md:text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(16,185,129,0.35)] hover:shadow-[0_0_60px_rgba(16,185,129,0.45)] w-full sm:w-auto group"
           >
             <Link href="/signup">
               Start Free Trial
-              <ArrowRight className="ml-2 w-4 md:w-5 h-4 md:h-5" />
+              <ArrowRight className="ml-2 w-4 md:w-5 h-4 md:h-5 transition-transform group-hover:translate-x-1 duration-300" />
             </Link>
           </Button>
           <Button
             size="lg"
             asChild
             variant="outline"
-            className="border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white hover:text-white font-medium px-6 md:px-8 h-12 md:h-14 rounded-full text-sm md:text-base transition-all hover:scale-[1.03] active:scale-[0.97] w-full sm:w-auto"
+            className="border-white/20 hover:border-white/40 bg-white/8 hover:bg-white/12 text-foreground hover:text-foreground font-medium px-8 md:px-10 h-13 md:h-15 rounded-full text-sm md:text-base transition-all hover:scale-105 active:scale-95 backdrop-blur-sm w-full sm:w-auto group"
           >
-            <Link href="/demo">Watch Demo</Link>
+            <Link href="/demo">
+              <span>Watch Demo</span>
+              <span className="inline-block ml-2 transition-transform group-hover:scale-125 duration-300">▶</span>
+            </Link>
           </Button>
         </motion.div>
 

@@ -84,15 +84,15 @@ export function Testimonials() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-20"
+          className="text-center mb-16 md:mb-24"
         >
-          <p className="text-xs md:text-sm text-emerald-400 font-medium tracking-wide uppercase mb-3 md:mb-4">
+          <p className="text-xs md:text-sm text-emerald-400 font-semibold tracking-widest uppercase mb-4 md:mb-5">
             Testimonials
           </p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6" style={{ letterSpacing: "-0.03em" }}>
-            Loved by founders & investors across India
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 md:mb-8 max-w-3xl mx-auto" style={{ letterSpacing: "-0.03em" }}>
+            Loved by founders & investors <span className="text-gradient">across India</span>
           </h2>
-          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-xl md:max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Join thousands who are already building the future of Indian startups
           </p>
         </motion.div>
@@ -102,47 +102,47 @@ export function Testimonials() {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
-              className="glass-card p-5 md:p-8 relative group hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1"
+              className="glass-card p-7 md:p-10 relative group hover:border-emerald-500/40 hover:bg-emerald-500/6 transition-all duration-400 card-hover"
             >
               {/* Quote icon */}
               <Quote
-                className={`absolute top-4 md:top-6 right-4 md:right-6 w-8 md:w-10 h-8 md:h-10 opacity-10 ${testimonial.color === "emerald" ? "text-emerald-400" : "text-cyan-400"
+                className={`absolute top-6 md:top-8 right-6 md:right-8 w-8 md:w-10 h-8 md:h-10 opacity-15 ${testimonial.color === "emerald" ? "text-emerald-400" : "text-cyan-400"
                   }`}
               />
 
               {/* Stars */}
-              <div className="flex gap-0.5 md:gap-1 mb-4 md:mb-6">
+              <div className="flex gap-1 md:gap-1.5 mb-5 md:mb-8">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className="w-3.5 md:w-4 h-3.5 md:h-4 fill-emerald-400 text-emerald-400"
+                    className="w-4 md:w-5 h-4 md:h-5 fill-emerald-400 text-emerald-400"
                   />
                 ))}
               </div>
 
               {/* Quote */}
-              <p className="text-sm md:text-base text-foreground/90 italic mb-6 md:mb-8 leading-relaxed">
+              <p className="text-sm md:text-base text-foreground italic mb-7 md:mb-10 leading-relaxed font-medium">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
 
               {/* Author */}
               <div className="flex items-center gap-3 md:gap-4">
                 <div
-                  className={`w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center text-base md:text-lg font-bold ${testimonial.color === "emerald"
-                    ? "bg-emerald-500/20 text-emerald-400"
-                    : "bg-cyan-500/20 text-cyan-400"
+                  className={`w-11 md:w-13 h-11 md:h-13 rounded-full flex items-center justify-center text-base md:text-lg font-bold ${testimonial.color === "emerald"
+                    ? "bg-gradient-to-br from-emerald-500/30 to-emerald-500/10 border border-emerald-500/25 text-emerald-300"
+                    : "bg-gradient-to-br from-cyan-500/30 to-cyan-500/10 border border-cyan-500/25 text-cyan-300"
                     }`}
                 >
                   {testimonial.avatar}
                 </div>
                 <div>
-                  <p className="text-sm md:text-base text-foreground font-medium">{testimonial.name}</p>
+                  <p className="text-sm md:text-base text-foreground font-semibold">{testimonial.name}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">{testimonial.role}</p>
                 </div>
               </div>

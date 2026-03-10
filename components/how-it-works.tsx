@@ -56,16 +56,16 @@ export function HowItWorks() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-20"
+          className="text-center mb-16 md:mb-24"
         >
-          <p className="text-xs md:text-sm text-emerald-400 font-medium tracking-wide uppercase mb-3 md:mb-4">
+          <p className="text-xs md:text-sm text-emerald-400 font-semibold tracking-widest uppercase mb-3 md:mb-4 letter-spacing">
             How It Works
           </p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6" style={{ letterSpacing: "-0.03em" }}>
-            From idea to funded in three steps
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 md:mb-8 max-w-xl md:max-w-3xl mx-auto" style={{ letterSpacing: "-0.03em" }}>
+            From idea to funded in <span className="text-gradient">three steps</span>
           </h2>
-          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-xl md:max-w-2xl mx-auto leading-relaxed">
-            Our streamlined process makes fundraising and investing effortless
+          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Our streamlined process makes fundraising and investing effortless.
           </p>
         </motion.div>
 
@@ -74,10 +74,10 @@ export function HowItWorks() {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 relative"
         >
           {/* Connecting line (desktop) */}
-          <div className="absolute top-24 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent hidden md:block" />
+          <div className="absolute top-20 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent hidden md:block" />
 
           {steps.map((step, index) => (
             <motion.div
@@ -85,19 +85,19 @@ export function HowItWorks() {
               variants={itemVariants}
               className="relative group"
             >
-              <div className="glass-card p-6 md:p-8 h-full hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1">
-                {/* Icon */}
-                <div className="w-12 md:w-16 h-12 md:h-16 rounded-xl md:rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 transition-all">
-                  <step.icon className="w-5 md:w-7 h-5 md:h-7 text-emerald-400" />
+              <div className="glass-card p-8 md:p-10 h-full hover:border-emerald-500/40 hover:bg-emerald-500/6 transition-all duration-400 card-hover">
+                {/* Icon container */}
+                <div className="w-14 md:w-18 h-14 md:h-18 rounded-2xl md:rounded-3xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/25 flex items-center justify-center mb-6 md:mb-8 group-hover:from-emerald-500/30 group-hover:to-emerald-500/10 group-hover:border-emerald-500/50 transition-all duration-300">
+                  <step.icon className="w-6 md:w-8 h-6 md:h-8 text-emerald-400" />
                 </div>
 
                 {/* Step number */}
-                <div className="text-[10px] md:text-xs text-emerald-400 font-mono tracking-wider mb-2 md:mb-3">
-                  STEP {step.step}
+                <div className="text-xs md:text-sm text-emerald-400 font-semibold tracking-widest uppercase mb-3 md:mb-4">
+                  Step {step.step}
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2 md:mb-3">
+                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 md:mb-4">
                   {step.title}
                 </h3>
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
