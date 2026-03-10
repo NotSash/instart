@@ -105,14 +105,14 @@ export default function SettingsPage() {
 
     if (isLoading) {
         return (
-            <AppLayout currentPage="settings" userRole="founder">
+            <AppLayout currentPage="settings">
                 <div className="flex justify-center items-center h-96"><Loader2 className="w-6 h-6 animate-spin text-emerald-400" /></div>
             </AppLayout>
         )
     }
 
     return (
-        <AppLayout currentPage="settings" userRole="founder">
+        <AppLayout currentPage="settings">
             <div className="max-w-4xl mx-auto p-4 md:p-6">
                 <h1 className="text-2xl font-bold text-foreground mb-6" style={{ letterSpacing: '-0.02em' }}>Settings</h1>
 

@@ -37,7 +37,7 @@ export default function ProfileViewersPage() {
     }, [])
 
     return (
-        <AppLayout currentPage="settings" userRole="founder">
+        <AppLayout currentPage="settings">
             <div className="max-w-3xl mx-auto p-4 md:p-6">
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold text-foreground" style={{ letterSpacing: '-0.02em' }}>Profile Viewers</h1>

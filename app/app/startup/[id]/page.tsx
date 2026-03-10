@@ -59,7 +59,7 @@ export default function StartupProfilePage() {
 
     if (isLoading) {
         return (
-            <AppLayout currentPage="explore" userRole="investor">
+            <AppLayout currentPage="explore">
                 <div className="flex justify-center items-center h-96">
                     <Loader2 className="w-6 h-6 animate-spin text-emerald-400" />
                 </div>
@@ -69,7 +69,7 @@ export default function StartupProfilePage() {
 
     if (!profile || !founderProfile) {
         return (
-            <AppLayout currentPage="explore" userRole="investor">
+            <AppLayout currentPage="explore">
                 <div className="text-center py-20">
                     <p className="text-foreground font-medium mb-4">Startup not found</p>
                     <Link href="/app/explore/startups"><Button variant="outline">← Back to Explore</Button></Link>
@@ -81,7 +81,7 @@ export default function StartupProfilePage() {
     const tabs = ['overview', 'team', 'funding', 'updates']
 
     return (
-        <AppLayout currentPage="explore" userRole="investor">
+        <AppLayout currentPage="explore">
             <div className="p-4 md:p-6 max-w-5xl mx-auto">
                 {/* Back Button */}
                 <Link href="/app/explore/startups" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">

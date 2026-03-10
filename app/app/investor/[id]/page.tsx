@@ -62,7 +62,7 @@ export default function InvestorProfilePage() {
 
     if (isLoading) {
         return (
-            <AppLayout currentPage="explore" userRole="founder">
+            <AppLayout currentPage="explore">
                 <div className="flex justify-center items-center h-96">
                     <Loader2 className="w-6 h-6 animate-spin text-cyan-400" />
                 </div>
@@ -72,7 +72,7 @@ export default function InvestorProfilePage() {
 
     if (!profile || !investorProfile) {
         return (
-            <AppLayout currentPage="explore" userRole="founder">
+            <AppLayout currentPage="explore">
                 <div className="text-center py-20">
                     <p className="text-foreground font-medium mb-4">Investor not found</p>
                     <Link href="/app/explore/investors"><Button variant="outline">← Back to Explore</Button></Link>
@@ -84,7 +84,7 @@ export default function InvestorProfilePage() {
     const tabs = ['overview', 'portfolio']
 
     return (
-        <AppLayout currentPage="explore" userRole="founder">
+        <AppLayout currentPage="explore">
             <div className="p-4 md:p-6 max-w-5xl mx-auto">
                 <Link href="/app/explore/investors" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
                     <ArrowLeft className="w-4 h-4" /> Back to Explore

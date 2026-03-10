@@ -53,7 +53,7 @@ export default function CommunitiesPage() {
     }
 
     return (
-        <AppLayout currentPage="communities" userRole="founder">
+        <AppLayout currentPage="communities">
             <div className="max-w-5xl mx-auto p-4 md:p-6">
                 <div className="flex items-center justify-between mb-6">
                     <div>

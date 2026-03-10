@@ -116,7 +116,7 @@ export default function MessagingPage() {
         : conversations
 
     return (
-        <AppLayout currentPage="messages" userRole="founder">
+        <AppLayout currentPage="messages">
             <div className="flex h-[calc(100vh-64px)] md:h-[calc(100vh-64px)]">
                 {/* Conversations List */}
                 <div className={`${showMobileChat ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 border-r border-white/5 flex-col flex-shrink-0`}>

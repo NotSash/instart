@@ -114,7 +114,7 @@ export default function ExploreInvestorsPage() {
     )
 
     return (
-        <AppLayout currentPage="explore" userRole="founder">
+        <AppLayout currentPage="explore">
             <div className="p-4 md:p-6 max-w-7xl mx-auto">
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold text-foreground mb-1" style={{ letterSpacing: '-0.02em' }}>Explore Investors</h1>

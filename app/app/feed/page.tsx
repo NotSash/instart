@@ -4,10 +4,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AppLayout } from '@/components/app-layout'
+import { useUserRole } from '@/components/user-role-provider'
 import {
     ArrowBigUp, ArrowBigDown, MessageCircle, Share2, Bookmark, Plus,
     X, Image, Bold, Italic, Link2, List, TrendingUp, UserPlus, Sparkles,
-    Loader2
+    Loader2, Eye, Handshake, Briefcase, Compass
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -49,6 +50,7 @@ type PostRow = any
 
 export default function FeedPage() {
     const router = useRouter()
+    const { role } = useUserRole()
     const [activeTab, setActiveTab] = useState<'hot' | 'new' | 'top'>('hot')
     const [posts, setPosts] = useState<PostRow[]>([])
     const [isLoadingPosts, setIsLoadingPosts] = useState(true)
@@ -159,7 +161,7 @@ export default function FeedPage() {
     }
 
     return (
-        <AppLayout currentPage="feed" userRole="founder">
+        <AppLayout currentPage="feed">
             <div className="flex gap-6 p-4 md:p-6 max-w-7xl mx-auto">
                 {/* Main Feed */}
                 <div className="flex-1 min-w-0">
@@ -299,39 +301,90 @@ export default function FeedPage() {
 
                 {/* Right Sidebar — Desktop Only */}
                 <div className="hidden lg:block w-80 space-y-4 flex-shrink-0">
-                    {/* Trending Startups */}
-                    <div className="glass-card p-4">
-                        <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                            <TrendingUp className="w-4 h-4 text-emerald-400" /> Trending Startups
-                        </h3>
-                        {trendingStartups.length === 0 ? (
-                            <p className="text-xs text-muted-foreground">No startups yet. Be the first to onboard!</p>
-                        ) : (
-                            <div className="space-y-3">
-                                {trendingStartups.map((s: PostRow, i: number) => (
-                                    <div key={s.id} className="flex items-center gap-3 group cursor-pointer">
-                                        <span className="text-lg font-bold text-muted-foreground w-6">{i + 1}</span>
-                                        <div className="flex-1">
-                                            <p className="text-sm font-medium text-foreground group-hover:text-emerald-400 transition-colors">{s.startup_name}</p>
-                                            <span className="text-xs text-muted-foreground">{s.sectors?.[0] || 'Startup'}</span>
+                    {/* Role-specific primary widget */}
+                    {role === 'founder' && (
+                        <div className="glass-card p-4">
+                            <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                                <Compass className="w-4 h-4 text-cyan-400" /> Trending Investors
+                            </h3>
+                            <p className="text-xs text-muted-foreground mb-3">Investors actively looking in your sector.</p>
+                            <Button size="sm" onClick={() => router.push('/app/explore/investors')} className="w-full bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 text-sm">
+                                <Eye className="w-3.5 h-3.5 mr-1.5" />Explore Investors
+                            </Button>
+                        </div>
+                    )}
+                    {role === 'investor' && (
+                        <div className="glass-card p-4">
+                            <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                                <TrendingUp className="w-4 h-4 text-emerald-400" /> Trending Startups
+                            </h3>
+                            {trendingStartups.length === 0 ? (
+                                <p className="text-xs text-muted-foreground">No startups yet. Be the first to onboard!</p>
+                            ) : (
+                                <div className="space-y-3">
+                                    {trendingStartups.map((s: PostRow, i: number) => (
+                                        <div key={s.id} className="flex items-center gap-3 group cursor-pointer" onClick={() => router.push(`/app/startup/${s.id}`)}>
+                                            <span className="text-lg font-bold text-muted-foreground w-6">{i + 1}</span>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-medium text-foreground group-hover:text-emerald-400 transition-colors">{s.startup_name}</p>
+                                                <span className="text-xs text-muted-foreground">{s.sectors?.[0] || 'Startup'}</span>
+                                            </div>
+                                            {s.health_score && (
+                                                <span className="text-xs text-emerald-400 font-medium">
+                                                    {s.health_score}
+                                                </span>
+                                            )}
                                         </div>
-                                        {s.health_score && (
-                                            <span className="text-xs text-emerald-400 font-medium">
-                                                {s.health_score}
-                                            </span>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    {role === 'cofounder_seeker' && (
+                        <div className="glass-card p-4">
+                            <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                                <Handshake className="w-4 h-4 text-purple-400" /> Find Your Co-founder
+                            </h3>
+                            <p className="text-xs text-muted-foreground mb-3">Browse people looking for co-founders with complementary skills.</p>
+                            <Button size="sm" onClick={() => router.push('/app/explore/cofounders')} className="w-full bg-purple-600/20 hover:bg-purple-600/30 text-purple-400 border border-purple-500/30 text-sm">
+                                <Handshake className="w-3.5 h-3.5 mr-1.5" />Browse Matches
+                            </Button>
+                        </div>
+                    )}
+                    {(role === 'browser' || role === 'admin') && (
+                        <div className="glass-card p-4">
+                            <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                                <TrendingUp className="w-4 h-4 text-emerald-400" /> Trending Startups
+                            </h3>
+                            {trendingStartups.length === 0 ? (
+                                <p className="text-xs text-muted-foreground">No startups yet.</p>
+                            ) : (
+                                <div className="space-y-3">
+                                    {trendingStartups.map((s: PostRow, i: number) => (
+                                        <div key={s.id} className="flex items-center gap-3 group cursor-pointer">
+                                            <span className="text-lg font-bold text-muted-foreground w-6">{i + 1}</span>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-medium text-foreground group-hover:text-emerald-400 transition-colors">{s.startup_name}</p>
+                                                <span className="text-xs text-muted-foreground">{s.sectors?.[0] || 'Startup'}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
-                    {/* Suggested Connections */}
+                    {/* Suggested Connections — all roles */}
                     <div className="glass-card p-4">
                         <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
                             <UserPlus className="w-4 h-4 text-cyan-400" /> Suggested Connections
                         </h3>
-                        <p className="text-xs text-muted-foreground">Connect with founders and investors in your sector. Coming soon!</p>
+                        <p className="text-xs text-muted-foreground">
+                            {role === 'founder' ? 'Connect with investors and fellow founders in your sector.' :
+                                role === 'investor' ? 'Connect with promising founders and fellow investors.' :
+                                    role === 'cofounder_seeker' ? 'Connect with potential co-founders who complement your skills.' :
+                                        'Connect with founders and investors in your areas of interest.'} Coming soon!
+                        </p>
                     </div>
 
                     {/* Go Premium */}
@@ -340,7 +393,12 @@ export default function FeedPage() {
                             <Sparkles className="w-5 h-5 text-emerald-400" />
                             <h3 className="text-sm font-semibold text-foreground">Go Pro</h3>
                         </div>
-                        <p className="text-xs text-muted-foreground mb-4">See who viewed your profile, get AI matching, and more.</p>
+                        <p className="text-xs text-muted-foreground mb-4">
+                            {role === 'founder' ? 'See who viewed your profile, get AI investor matching, and priority visibility.' :
+                                role === 'investor' ? 'Get AI startup matching, deal room access, and portfolio analytics.' :
+                                    role === 'cofounder_seeker' ? 'Get priority matching, unlimited connections, and profile boost.' :
+                                        'See who viewed your profile, get AI matching, and more.'}
+                        </p>
                         <Button size="sm" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm">
                             Upgrade Now
                         </Button>

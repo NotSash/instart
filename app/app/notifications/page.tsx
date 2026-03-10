@@ -68,7 +68,7 @@ export default function NotificationsPage() {
     }
 
     return (
-        <AppLayout currentPage="notifications" userRole="founder">
+        <AppLayout currentPage="notifications">
             <div className="max-w-3xl mx-auto p-4 md:p-6">
                 <div className="flex items-center justify-between mb-6">
                     <div>

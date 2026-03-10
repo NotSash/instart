@@ -61,7 +61,7 @@ export default function DealRoomPage() {
     const totalDocs = deals.reduce((sum: number, d: DataRow) => sum + (d.doc_count || 0), 0)
 
     return (
-        <AppLayout currentPage="dealroom" userRole="investor">
+        <AppLayout currentPage="dealroom">
             <div className="max-w-5xl mx-auto p-4 md:p-6">
                 <div className="flex items-center justify-between mb-6">
                     <div>

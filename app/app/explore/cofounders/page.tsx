@@ -107,7 +107,7 @@ export default function ExploreCofoundersPage() {
     )
 
     return (
-        <AppLayout currentPage="cofounders" userRole="founder">
+        <AppLayout currentPage="cofounders">
             <div className="p-4 md:p-6 max-w-7xl mx-auto">
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold text-foreground mb-1" style={{ letterSpacing: '-0.02em' }}>Find Co-founders</h1>

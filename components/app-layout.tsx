@@ -1,36 +1,74 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import {
   Home, Compass, Users, MessageSquare, Handshake, User, Bell,
-  ChevronLeft, ChevronRight, Search, Settings, LogOut, Menu, X
+  ChevronLeft, ChevronRight, Search, Settings, LogOut, Menu, X, Briefcase
 } from 'lucide-react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { createClient } from '@/lib/supabase/client'
 import { getUnreadCount } from '@/app/actions/notifications'
+import { useUserRole } from './user-role-provider'
 
 interface AppLayoutProps {
   children: React.ReactNode
   currentPage: 'feed' | 'explore' | 'communities' | 'messages' | 'cofounders' | 'profile' | 'notifications' | 'settings' | 'viewers' | 'dealroom' | 'compare' | (string & {})
-  userRole: 'founder' | 'investor' | 'cofounder'
+  userRole?: 'founder' | 'investor' | 'cofounder_seeker' | 'browser' | 'admin'
 }
 
-const navItems = [
-  { icon: Home, label: 'Feed', page: 'feed', href: '/app/feed' },
-  { icon: Compass, label: 'Explore', page: 'explore', href: '/app/explore/startups' },
-  { icon: Users, label: 'Communities', page: 'communities', href: '/app/communities' },
-  { icon: MessageSquare, label: 'Messages', page: 'messages', href: '/app/messages' },
-  { icon: Handshake, label: 'Co-founders', page: 'cofounders', href: '/app/explore/cofounders' },
-  { icon: User, label: 'Profile', page: 'profile', href: '/app/settings' },
-]
+function getNavItems(role: string) {
+  const common = [
+    { icon: Home, label: 'Feed', page: 'feed', href: '/app/feed' },
+  ]
+  const bottom = [
+    { icon: MessageSquare, label: 'Messages', page: 'messages', href: '/app/messages' },
+    { icon: User, label: 'Profile', page: 'profile', href: '/app/settings' },
+  ]
 
-export function AppLayout({ children, currentPage, userRole }: AppLayoutProps) {
+  switch (role) {
+    case 'investor':
+      return [
+        ...common,
+        { icon: Compass, label: 'Explore Startups', page: 'explore', href: '/app/explore/startups' },
+        { icon: Briefcase, label: 'Deal Room', page: 'dealroom', href: '/app/deal-room' },
+        { icon: Users, label: 'Communities', page: 'communities', href: '/app/communities' },
+        ...bottom,
+      ]
+    case 'cofounder_seeker':
+      return [
+        ...common,
+        { icon: Handshake, label: 'Browse Co-founders', page: 'cofounders', href: '/app/explore/cofounders' },
+        { icon: Users, label: 'Communities', page: 'communities', href: '/app/communities' },
+        ...bottom,
+      ]
+    case 'founder':
+      return [
+        ...common,
+        { icon: Compass, label: 'Explore Investors', page: 'explore', href: '/app/explore/investors' },
+        { icon: Users, label: 'Communities', page: 'communities', href: '/app/communities' },
+        { icon: Handshake, label: 'Co-founders', page: 'cofounders', href: '/app/explore/cofounders' },
+        ...bottom,
+      ]
+    default: // browser / admin
+      return [
+        ...common,
+        { icon: Compass, label: 'Explore', page: 'explore', href: '/app/explore/startups' },
+        { icon: Users, label: 'Communities', page: 'communities', href: '/app/communities' },
+        ...bottom,
+      ]
+  }
+}
+
+export function AppLayout({ children, currentPage, userRole: userRoleProp }: AppLayoutProps) {
   const router = useRouter()
+  const { role: contextRole } = useUserRole()
+  const activeRole = userRoleProp || contextRole || 'founder'
+  const navItems = useMemo(() => getNavItems(activeRole), [activeRole])
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
@@ -139,7 +177,7 @@ export function AppLayout({ children, currentPage, userRole }: AppLayoutProps) {
           {sidebarOpen && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">{userName || 'User'}</p>
-              <p className="text-xs text-muted-foreground truncate capitalize">{userRole}</p>
+              <p className="text-xs text-muted-foreground truncate capitalize">{activeRole.replace('_', ' ')}</p>
             </div>
           )}
           <div className="relative">

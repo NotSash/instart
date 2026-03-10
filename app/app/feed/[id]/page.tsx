@@ -91,7 +91,7 @@ export default function PostDetailPage() {
 
     if (isLoading) {
         return (
-            <AppLayout currentPage="feed" userRole="founder">
+            <AppLayout currentPage="feed">
                 <div className="flex justify-center items-center h-96"><Loader2 className="w-6 h-6 animate-spin text-emerald-400" /></div>
             </AppLayout>
         )
@@ -99,7 +99,7 @@ export default function PostDetailPage() {
 
     if (!post) {
         return (
-            <AppLayout currentPage="feed" userRole="founder">
+            <AppLayout currentPage="feed">
                 <div className="text-center py-20">
                     <p className="text-foreground font-medium mb-4">Post not found</p>
                     <Link href="/app/feed"><Button variant="outline">← Back to Feed</Button></Link>
@@ -111,7 +111,7 @@ export default function PostDetailPage() {
     const score = post.upvotes - post.downvotes
 
     return (
-        <AppLayout currentPage="feed" userRole="founder">
+        <AppLayout currentPage="feed">
             <div className="max-w-3xl mx-auto p-4 md:p-6">
                 <Link href="/app/feed" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
                     <ArrowLeft className="w-4 h-4" /> Back to Feed

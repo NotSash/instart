@@ -1,5 +1,9 @@
-import { AppLayout } from '@/components/app-layout'
+import { UserRoleProvider } from '@/components/user-role-provider'
 
 export default function AppRootLayout({ children }: { children: React.ReactNode }) {
-    return children
+    return (
+        <UserRoleProvider>
+            {children}
+        </UserRoleProvider>
+    )
 }

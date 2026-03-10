@@ -56,7 +56,7 @@ export default function CommunityDetailPage() {
 
     if (isLoading) {
         return (
-            <AppLayout currentPage="communities" userRole="founder">
+            <AppLayout currentPage="communities">
                 <div className="flex justify-center items-center h-96"><Loader2 className="w-6 h-6 animate-spin text-emerald-400" /></div>
             </AppLayout>
         )
@@ -64,7 +64,7 @@ export default function CommunityDetailPage() {
 
     if (!community) {
         return (
-            <AppLayout currentPage="communities" userRole="founder">
+            <AppLayout currentPage="communities">
                 <div className="text-center py-20">
                     <Hash className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
                     <p className="text-foreground font-medium mb-4">Community not found</p>
@@ -75,7 +75,7 @@ export default function CommunityDetailPage() {
     }
 
     return (
-        <AppLayout currentPage="communities" userRole="founder">
+        <AppLayout currentPage="communities">
             <div className="max-w-4xl mx-auto p-4 md:p-6">
                 <Link href="/app/communities" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
                     <ArrowLeft className="w-4 h-4" /> Back to Communities
