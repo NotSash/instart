@@ -25,7 +25,7 @@ const metrics: { key: string; label: string; numeric?: boolean }[] = [
 function formatValue(startup: DataRow, key: string): string {
     switch (key) {
         case 'health_score': return startup.health_score ? `${startup.health_score}/100` : '—'
-        case 'stage': return startup.stage?.replace(/_/g, ' ') || '—'
+        case 'stage': return startup.stage?.replaceAll('_', ' ') || '—'
         case 'sectors': return startup.sectors?.join(', ') || '—'
         case 'team_size': return startup.team_size ? String(startup.team_size) : '—'
         case 'total_raised': {
@@ -115,7 +115,7 @@ export default function CompareStartupsPage() {
                                 <button onClick={() => removeStartup(s.id)} className="text-muted-foreground hover:text-red-400 transition-colors"><X className="w-4 h-4" /></button>
                             </div>
                             <p className="text-sm font-semibold text-foreground">{s.startup_name}</p>
-                            <p className="text-xs text-muted-foreground">{s.sectors?.[0] || 'Startup'} · {s.stage?.replace(/_/g, ' ') || ''}</p>
+                            <p className="text-xs text-muted-foreground">{s.sectors?.[0] || 'Startup'} · {s.stage?.replaceAll('_', ' ') || ''}</p>
                         </div>
                     ))}
                     {selectedIds.length < 4 && (

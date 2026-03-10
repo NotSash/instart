@@ -105,12 +105,39 @@ export async function createPost(data: {
 // ═══════════════════════════════════════════════════════════════
 // VOTE ON POST (upvote = 1, downvote = -1, remove = 0)
 // ═══════════════════════════════════════════════════════════════
+
+async function adjustPostCounter(supabase: Awaited<ReturnType<typeof createClient>>, postId: string, field: 'upvotes' | 'downvotes', delta: number) {
+    const { data: p } = await supabase.from('posts').select(field).eq('id', postId).single()
+    if (!p) return
+    const current = (p as Record<string, number>)[field] || 0
+    await supabase.from('posts').update({ [field]: Math.max(0, current + delta) }).eq('id', postId)
+}
+
+async function removeExistingVote(supabase: Awaited<ReturnType<typeof createClient>>, postId: string, existingVote: { id: string; vote: number }) {
+    await supabase.from('post_votes').delete().eq('id', existingVote.id)
+    const field = existingVote.vote === 1 ? 'upvotes' : 'downvotes' as const
+    await adjustPostCounter(supabase, postId, field, -1)
+}
+
+async function changeExistingVote(supabase: Awaited<ReturnType<typeof createClient>>, postId: string, existingVote: { id: string; vote: number }, newVote: number) {
+    await supabase.from('post_votes').update({ vote: newVote }).eq('id', existingVote.id)
+    const oldField = existingVote.vote === 1 ? 'upvotes' : 'downvotes' as const
+    const newField = newVote === 1 ? 'upvotes' : 'downvotes' as const
+    await adjustPostCounter(supabase, postId, oldField, -1)
+    await adjustPostCounter(supabase, postId, newField, 1)
+}
+
+async function createNewVote(supabase: Awaited<ReturnType<typeof createClient>>, postId: string, userId: string, vote: number) {
+    await supabase.from('post_votes').insert({ post_id: postId, user_id: userId, vote })
+    const field = vote === 1 ? 'upvotes' : 'downvotes' as const
+    await adjustPostCounter(supabase, postId, field, 1)
+}
+
 export async function voteOnPost(postId: string, vote: number) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return { error: 'Not authenticated' }
 
-    // Check for existing vote
     const { data: existingVote } = await supabase
         .from('post_votes')
         .select('id, vote')
@@ -119,43 +146,11 @@ export async function voteOnPost(postId: string, vote: number) {
         .maybeSingle()
 
     if (vote === 0 && existingVote) {
-        // Remove vote
-        const oldVote = existingVote.vote
-        await supabase.from('post_votes').delete().eq('id', existingVote.id)
-        // Update the post counters
-        if (oldVote === 1) {
-            const { data: p } = await supabase.from('posts').select('upvotes').eq('id', postId).single()
-            if (p) await supabase.from('posts').update({ upvotes: Math.max(0, p.upvotes - 1) }).eq('id', postId)
-        } else if (oldVote === -1) {
-            const { data: p } = await supabase.from('posts').select('downvotes').eq('id', postId).single()
-            if (p) await supabase.from('posts').update({ downvotes: Math.max(0, p.downvotes - 1) }).eq('id', postId)
-        }
-        return { error: null }
-    }
-
-    if (existingVote) {
-        // Change vote direction
-        const oldVote = existingVote.vote
-        await supabase.from('post_votes').update({ vote }).eq('id', existingVote.id)
-
-        // Update counters: undo old vote, apply new vote
-        const updates: Record<string, number> = {}
-        const { data: postData } = await supabase.from('posts').select('upvotes, downvotes').eq('id', postId).single()
-        if (postData) {
-            if (oldVote === 1) updates.upvotes = Math.max(0, postData.upvotes - 1)
-            if (oldVote === -1) updates.downvotes = Math.max(0, postData.downvotes - 1)
-            if (vote === 1) updates.upvotes = (updates.upvotes ?? postData.upvotes) + 1
-            if (vote === -1) updates.downvotes = (updates.downvotes ?? postData.downvotes) + 1
-            await supabase.from('posts').update(updates).eq('id', postId)
-        }
+        await removeExistingVote(supabase, postId, existingVote)
+    } else if (existingVote) {
+        await changeExistingVote(supabase, postId, existingVote, vote)
     } else {
-        // New vote
-        await supabase.from('post_votes').insert({ post_id: postId, user_id: user.id, vote })
-        const field = vote === 1 ? 'upvotes' : 'downvotes'
-        const { data: postData } = await supabase.from('posts').select(field).eq('id', postId).single()
-        if (postData) {
-            await supabase.from('posts').update({ [field]: ((postData as Record<string, number>)[field] || 0) + 1 }).eq('id', postId)
-        }
+        await createNewVote(supabase, postId, user.id, vote)
     }
 
     return { error: null }

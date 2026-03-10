@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* stylelint-disable */
 @custom-variant dark (&:is(.dark *));
+/* stylelint-enable */
 
 /* Instart Dark Theme - Premium Startup Platform */
 :root {

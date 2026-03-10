@@ -8,7 +8,7 @@ import { useUserRole } from '@/components/user-role-provider'
 import {
     ArrowBigUp, ArrowBigDown, MessageCircle, Share2, Bookmark, Plus,
     X, Image, Bold, Italic, Link2, List, TrendingUp, UserPlus, Sparkles,
-    Loader2, Eye, Handshake, Briefcase, Compass
+    Loader2, Eye, Handshake, Compass
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -47,6 +47,16 @@ function timeAgo(dateStr: string): string {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PostRow = any
+
+function applyVoteDelta(post: PostRow, oldVote: number, newVote: number): PostRow {
+    let upvotes = post.upvotes
+    let downvotes = post.downvotes
+    if (oldVote === 1) upvotes--
+    if (oldVote === -1) downvotes--
+    if (newVote === 1) upvotes++
+    if (newVote === -1) downvotes++
+    return { ...post, upvotes, downvotes }
+}
 
 export default function FeedPage() {
     const router = useRouter()
@@ -109,15 +119,7 @@ export default function FeedPage() {
         setVotes(prev => ({ ...prev, [postId]: newVote }))
         setPosts(prev => prev.map(p => {
             if (p.id !== postId) return p
-            let upvotes = p.upvotes
-            let downvotes = p.downvotes
-            // Undo old vote
-            if (currentVote === 1) upvotes--
-            if (currentVote === -1) downvotes--
-            // Apply new vote
-            if (newVote === 1) upvotes++
-            if (newVote === -1) downvotes++
-            return { ...p, upvotes, downvotes }
+            return applyVoteDelta(p, currentVote, newVote)
         }))
 
         await voteOnPost(postId, newVote)
@@ -227,7 +229,7 @@ export default function FeedPage() {
                                         </span>
                                         <span className="text-foreground font-medium">{post.profiles?.full_name || 'Anonymous'}</span>
                                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[post.profiles?.role] || roleColors.founder}`}>
-                                            {post.profiles?.role?.replace('_', ' ') || 'Member'}
+                                            {post.profiles?.role?.replaceAll('_', ' ') || 'Member'}
                                         </span>
                                         <span className="text-muted-foreground">·</span>
                                         <span className="text-muted-foreground text-xs">{timeAgo(post.created_at)}</span>
@@ -323,7 +325,7 @@ export default function FeedPage() {
                             ) : (
                                 <div className="space-y-3">
                                     {trendingStartups.map((s: PostRow, i: number) => (
-                                        <div key={s.id} className="flex items-center gap-3 group cursor-pointer" onClick={() => router.push(`/app/startup/${s.id}`)}>
+                                        <button key={s.id} type="button" className="flex items-center gap-3 group cursor-pointer w-full text-left" onClick={() => router.push(`/app/startup/${s.id}`)}>
                                             <span className="text-lg font-bold text-muted-foreground w-6">{i + 1}</span>
                                             <div className="flex-1">
                                                 <p className="text-sm font-medium text-foreground group-hover:text-emerald-400 transition-colors">{s.startup_name}</p>
@@ -334,7 +336,7 @@ export default function FeedPage() {
                                                     {s.health_score}
                                                 </span>
                                             )}
-                                        </div>
+                                        </button>
                                     ))}
                                 </div>
                             )}
@@ -361,13 +363,13 @@ export default function FeedPage() {
                             ) : (
                                 <div className="space-y-3">
                                     {trendingStartups.map((s: PostRow, i: number) => (
-                                        <div key={s.id} className="flex items-center gap-3 group cursor-pointer" onClick={() => router.push(`/app/startup/${s.id}`)}>
+                                        <button key={s.id} type="button" className="flex items-center gap-3 group cursor-pointer w-full text-left" onClick={() => router.push(`/app/startup/${s.id}`)}>
                                             <span className="text-lg font-bold text-muted-foreground w-6">{i + 1}</span>
                                             <div className="flex-1">
                                                 <p className="text-sm font-medium text-foreground group-hover:text-emerald-400 transition-colors">{s.startup_name}</p>
                                                 <span className="text-xs text-muted-foreground">{s.sectors?.[0] || 'Startup'}</span>
                                             </div>
-                                        </div>
+                                        </button>
                                     ))}
                                 </div>
                             )}

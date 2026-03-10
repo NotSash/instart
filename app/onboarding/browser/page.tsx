@@ -125,15 +125,15 @@ export default function BrowserOnboarding() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2"><MapPin className="w-4 h-4 inline mr-1" />City</label>
-                                    <select value={city} onChange={e => setCity(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
+                                    <label htmlFor="browserCity" className="block text-sm font-medium text-foreground mb-2"><MapPin className="w-4 h-4 inline mr-1" />City</label>
+                                    <select id="browserCity" value={city} onChange={e => setCity(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
                                         <option value="" className="bg-[#111]">Select your city</option>
                                         {indianCities.map(c => <option key={c} value={c} className="bg-[#111]">{c}</option>)}
                                     </select>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-3">What interests you? <span className="text-muted-foreground text-xs">(pick up to 5)</span></label>
+                                    <span className="block text-sm font-medium text-foreground mb-3">What interests you? <span className="text-muted-foreground text-xs">(pick up to 5)</span></span>
                                     <div className="flex flex-wrap gap-2">
                                         {sectors.map(s => (
                                             <motion.button
@@ -165,7 +165,7 @@ export default function BrowserOnboarding() {
                                 </motion.div>
 
                                 <div className="relative">
-                                    {[...Array(12)].map((_, i) => (
+                                    {Array.from({ length: 12 }).map((_, i) => (
                                         <motion.div key={i} className={`absolute w-2 h-2 rounded-full ${['bg-amber-500', 'bg-orange-500', 'bg-emerald-500', 'bg-cyan-500'][i % 4]}`}
                                             initial={{ x: 0, y: 0, opacity: 1, scale: 1 }} animate={{ x: (Math.random() - 0.5) * 300, y: (Math.random() - 0.5) * 200 - 50, opacity: 0, scale: 0 }}
                                             transition={{ duration: 1.5, delay: 0.3 + i * 0.05, ease: 'easeOut' }} style={{ left: '50%', top: '-40px' }}

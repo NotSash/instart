@@ -180,7 +180,7 @@ export default function StartupProfilePage() {
                                 <div className="glass-card p-6">
                                     <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2"><Video className="w-5 h-5 text-emerald-400" /> Video Pitch</h3>
                                     <div className="aspect-video rounded-xl overflow-hidden bg-black/50">
-                                        <iframe src={founderProfile.video_pitch_url} className="w-full h-full" allowFullScreen />
+                                        <iframe src={founderProfile.video_pitch_url} title={`${founderProfile.startup_name} Video Pitch`} className="w-full h-full" allowFullScreen />
                                     </div>
                                 </div>
                             )}

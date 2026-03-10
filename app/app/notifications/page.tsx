@@ -118,7 +118,7 @@ export default function NotificationsPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.03 }}
                                     onClick={() => handleMarkRead(notif.id)}
-                                    className={`flex items-start gap-4 p-4 rounded-xl transition-all cursor-pointer ${!notif.is_read ? 'bg-white/5 border border-white/5' : 'hover:bg-white/3'}`}
+                                    className={`flex items-start gap-4 p-4 rounded-xl transition-all cursor-pointer ${notif.is_read ? 'hover:bg-white/3' : 'bg-white/5 border border-white/5'}`}
                                 >
                                     <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${iconConfig.color}`}>
                                         <Icon className="w-5 h-5" />
@@ -126,9 +126,9 @@ export default function NotificationsPage() {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-start justify-between gap-2">
                                             <div>
-                                                <p className={`text-sm font-medium ${!notif.is_read ? 'text-foreground' : 'text-foreground/80'}`}>{notif.title}</p>
+                                                <p className={`text-sm font-medium ${notif.is_read ? 'text-foreground/80' : 'text-foreground'}`}>{notif.title}</p>
                                                 {notif.message && <p className="text-xs text-muted-foreground mt-0.5">{notif.message}</p>}
-                                                {notif.actor && <p className="text-xs text-muted-foreground mt-0.5">{notif.actor.full_name} · {notif.actor.role?.replace('_', ' ')}</p>}
+                                                {notif.actor && <p className="text-xs text-muted-foreground mt-0.5">{notif.actor.full_name} · {notif.actor.role?.replaceAll('_', ' ')}</p>}
                                             </div>
                                             <div className="flex items-center gap-2 flex-shrink-0">
                                                 <span className="text-xs text-muted-foreground">{timeAgo(notif.created_at)}</span>

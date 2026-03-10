@@ -71,7 +71,7 @@ export default function ProfileViewersPage() {
                                             <p className="text-sm font-medium text-foreground">{viewer?.full_name || 'User'}</p>
                                         )}
                                         <div className="flex items-center gap-3 mt-0.5">
-                                            <span className="text-xs text-muted-foreground capitalize">{viewer?.role?.replace('_', ' ') || ''}</span>
+                                            <span className="text-xs text-muted-foreground capitalize">{viewer?.role?.replaceAll('_', ' ') || ''}</span>
                                             {viewer?.city && <span className="text-xs text-muted-foreground flex items-center gap-0.5"><MapPin className="w-3 h-3" />{viewer.city}</span>}
                                         </div>
                                     </div>

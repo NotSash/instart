@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Clock, ArrowLeft, Share2, Bookmark, Linkedin, Loader2, BookOpen } from 'lucide-react'
+import { Clock, ArrowLeft, Share2, Bookmark, Loader2, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { fetchBlogPost } from '@/app/actions/premium'
@@ -64,7 +64,7 @@ export default function BlogPostPage() {
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-foreground">{post.author?.full_name || 'Instart Team'}</p>
-                                    <p className="text-xs text-muted-foreground capitalize">{post.author?.role?.replace('_', ' ') || 'Author'}</p>
+                                    <p className="text-xs text-muted-foreground capitalize">{post.author?.role?.replaceAll('_', ' ') || 'Author'}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 text-xs text-muted-foreground">
@@ -87,17 +87,17 @@ export default function BlogPostPage() {
                             <div className="flex items-center gap-3">
                                 <span className="text-sm text-muted-foreground">Share:</span>
                                 <button
-                                    onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}`, '_blank')}
+                                    onClick={() => globalThis.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(globalThis.location.href)}`, '_blank')}
                                     className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
                                 >
-                                    <Linkedin className="w-4 h-4" />
+                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
                                 </button>
                                 <button
                                     onClick={() => {
                                         if (navigator.share) {
-                                            navigator.share({ title: document.title, url: window.location.href })
+                                            navigator.share({ title: document.title, url: globalThis.location.href })
                                         } else {
-                                            navigator.clipboard.writeText(window.location.href)
+                                            navigator.clipboard.writeText(globalThis.location.href)
                                         }
                                     }}
                                     className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"

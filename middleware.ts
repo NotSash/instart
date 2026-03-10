@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
 // Routes that don't require authentication
-const PUBLIC_ROUTES = [
+const PUBLIC_ROUTES = new Set([
     '/',
     '/pricing',
     '/blog',
@@ -11,10 +11,10 @@ const PUBLIC_ROUTES = [
     '/privacy',
     '/terms',
     '/auth/callback',
-]
+])
 
 function isPublicRoute(pathname: string): boolean {
-    if (PUBLIC_ROUTES.includes(pathname)) return true
+    if (PUBLIC_ROUTES.has(pathname)) return true
     if (pathname.startsWith('/blog/')) return true
     if (pathname.startsWith('/auth/')) return true
     if (pathname.startsWith('/api/')) return true
@@ -24,15 +24,7 @@ function isPublicRoute(pathname: string): boolean {
     return false
 }
 
-export async function middleware(request: NextRequest) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    // If Supabase isn't configured yet, pass through all requests
-    if (!url || !anonKey || url.startsWith('your_') || anonKey.startsWith('your_')) {
-        return NextResponse.next()
-    }
-
+function createSupabaseClient(request: NextRequest, url: string, anonKey: string) {
     let supabaseResponse = NextResponse.next({ request })
 
     const supabase = createServerClient(url, anonKey, {
@@ -50,39 +42,51 @@ export async function middleware(request: NextRequest) {
         },
     })
 
+    return { supabase, getResponse: () => supabaseResponse }
+}
+
+async function handlePublicRoute(supabase: ReturnType<typeof createServerClient>, pathname: string, requestUrl: string, getResponse: () => NextResponse) {
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (user && (pathname === '/' || pathname === '/login' || pathname === '/signup')) {
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('is_onboarded')
+            .eq('id', user.id)
+            .single()
+
+        if (profile?.is_onboarded) {
+            return NextResponse.redirect(new URL('/app/feed', requestUrl))
+        }
+    }
+
+    return getResponse()
+}
+
+
+export async function middleware(request: NextRequest) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!url || !anonKey || url.startsWith('your_') || anonKey.startsWith('your_')) {
+        return NextResponse.next()
+    }
+
+    const { supabase, getResponse } = createSupabaseClient(request, url, anonKey)
     const { pathname } = request.nextUrl
 
-    // Allow public routes
     if (isPublicRoute(pathname)) {
-        // Still refresh the session even on public routes
-        const { data: { user } } = await supabase.auth.getUser()
-
-        // If user is authenticated and tries to access marketing/auth pages, redirect to app
-        if (user && (pathname === '/' || pathname === '/login' || pathname === '/signup')) {
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('is_onboarded')
-                .eq('id', user.id)
-                .single()
-
-            if (profile?.is_onboarded) {
-                return NextResponse.redirect(new URL('/app/feed', request.url))
-            }
-        }
-
-        return supabaseResponse
+        return handlePublicRoute(supabase, pathname, request.url, getResponse)
     }
 
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Redirect unauthenticated users to login
     if (!user) {
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('redirectTo', pathname)
         return NextResponse.redirect(loginUrl)
     }
 
-    // Check if user is onboarded (for app routes)
     if (pathname.startsWith('/app/') || pathname === '/app') {
         const { data: profile } = await supabase
             .from('profiles')
@@ -94,17 +98,15 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/', request.url))
         }
 
-        if (profile && !profile.is_onboarded && !pathname.startsWith('/onboarding')) {
+        if (profile && !profile.is_onboarded) {
             return NextResponse.redirect(new URL('/onboarding', request.url))
         }
     }
 
-    // Onboarding pages — allow if authenticated
     if (pathname.startsWith('/onboarding')) {
-        return supabaseResponse
+        return getResponse()
     }
 
-    // Admin routes — check role
     if (pathname.startsWith('/admin')) {
         const { data: profile } = await supabase
             .from('profiles')
@@ -117,11 +119,11 @@ export async function middleware(request: NextRequest) {
         }
     }
 
-    return supabaseResponse
+    return getResponse()
 }
 
 export const config = {
     matcher: [
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+        String.raw`/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)`,
     ],
 }

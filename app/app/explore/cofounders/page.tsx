@@ -62,12 +62,12 @@ export default function ExploreCofoundersPage() {
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">Skills</h4>
                 <div className="space-y-2">
                     {skillsList.map(s => (
-                        <label key={s} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleFilter(selectedSkills, setSelectedSkills, s)}>
+                        <button key={s} type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => toggleFilter(selectedSkills, setSelectedSkills, s)}>
                             <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${selectedSkills.includes(s) ? 'bg-purple-500 border-purple-500' : 'border-white/20 group-hover:border-white/40'}`}>
                                 {selectedSkills.includes(s) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                             </div>
                             <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{s}</span>
-                        </label>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -76,12 +76,12 @@ export default function ExploreCofoundersPage() {
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">Sectors</h4>
                 <div className="space-y-2">
                     {sectors.map(s => (
-                        <label key={s} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleFilter(selectedSectors, setSelectedSectors, s)}>
+                        <button key={s} type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => toggleFilter(selectedSectors, setSelectedSectors, s)}>
                             <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${selectedSectors.includes(s) ? 'bg-purple-500 border-purple-500' : 'border-white/20 group-hover:border-white/40'}`}>
                                 {selectedSectors.includes(s) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                             </div>
                             <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{s}</span>
-                        </label>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -90,12 +90,12 @@ export default function ExploreCofoundersPage() {
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">Commitment</h4>
                 <div className="space-y-2">
                     {commitmentLevels.map(c => (
-                        <label key={c} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => setSelectedCommitment(selectedCommitment === c ? '' : c)}>
+                        <button key={c} type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => setSelectedCommitment(selectedCommitment === c ? '' : c)}>
                             <div className={`w-4 h-4 rounded-full border transition-all flex items-center justify-center ${selectedCommitment === c ? 'bg-purple-500 border-purple-500' : 'border-white/20 group-hover:border-white/40'}`}>
                                 {selectedCommitment === c && <div className="w-2 h-2 rounded-full bg-black" />}
                             </div>
                             <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{commitmentLabels[c]}</span>
-                        </label>
+                        </button>
                     ))}
                 </div>
             </div>

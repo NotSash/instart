@@ -17,7 +17,7 @@ import { useUserRole } from './user-role-provider'
 
 interface AppLayoutProps {
   children: React.ReactNode
-  currentPage: 'feed' | 'explore' | 'communities' | 'messages' | 'cofounders' | 'profile' | 'notifications' | 'settings' | 'viewers' | 'dealroom' | 'compare' | (string & {})
+  currentPage: string
   userRole?: 'founder' | 'investor' | 'cofounder_seeker' | 'browser' | 'admin'
 }
 
@@ -64,7 +64,7 @@ function getNavItems(role: string) {
   }
 }
 
-export function AppLayout({ children, currentPage, userRole: userRoleProp }: AppLayoutProps) {
+export function AppLayout({ children, currentPage, userRole: userRoleProp }: Readonly<AppLayoutProps>) {
   const router = useRouter()
   const { role: contextRole } = useUserRole()
   const activeRole = userRoleProp || contextRole || 'founder'

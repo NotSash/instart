@@ -117,9 +117,9 @@ export function Pricing() {
           <div className="inline-flex items-center gap-2 md:gap-4 p-1 md:p-1.5 rounded-full bg-white/5 border border-white/10">
             <button
               onClick={() => setIsYearly(false)}
-              className={`px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-medium transition-all ${!isYearly
-                ? "bg-emerald-500 text-black"
-                : "text-muted-foreground hover:text-foreground"
+              className={`px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-medium transition-all ${isYearly
+                ? "text-muted-foreground hover:text-foreground"
+                : "bg-emerald-500 text-black"
                 }`}
             >
               Monthly
@@ -131,10 +131,7 @@ export function Pricing() {
                 : "text-muted-foreground hover:text-foreground"
                 }`}
             >
-              Yearly
-              <span className={`text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 rounded-full ${isYearly ? "bg-black/20 text-black" : "bg-emerald-500/20 text-emerald-400"}`}>
-                Save 16%
-              </span>
+              Yearly<span className={`ml-1 text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 rounded-full ${isYearly ? "bg-black/20 text-black" : "bg-emerald-500/20 text-emerald-400"}`}>Save 16%</span>
             </button>
           </div>
         </motion.div>
@@ -174,15 +171,15 @@ export function Pricing() {
 
                 {/* Price */}
                 <div className="flex items-baseline gap-1 md:gap-2">
-                  {plan.monthlyPrice !== null ? (
+                  {plan.monthlyPrice === null ? (
+                    <span className="text-3xl md:text-4xl font-bold text-foreground">Custom</span>
+                  ) : (
                     <>
                       <span className="text-3xl md:text-4xl font-bold text-foreground">
                         ₹{isYearly ? plan.yearlyPrice?.toLocaleString() : plan.monthlyPrice.toLocaleString()}
                       </span>
                       <span className="text-muted-foreground text-sm">/month</span>
                     </>
-                  ) : (
-                    <span className="text-3xl md:text-4xl font-bold text-foreground">Custom</span>
                   )}
                 </div>
                 {plan.monthlyPrice !== null && plan.monthlyPrice > 0 && isYearly && (
@@ -195,7 +192,7 @@ export function Pricing() {
               {/* Features */}
               <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
                 {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-2 md:gap-3">
+                  <li key={feature.text} className="flex items-start gap-2 md:gap-3">
                     {feature.included ? (
                       <div className="w-4 md:w-5 h-4 md:h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Check className="w-2.5 md:w-3 h-2.5 md:h-3 text-emerald-400" />
@@ -216,11 +213,11 @@ export function Pricing() {
               <Button
                 onClick={() => {
                   if (plan.name === 'Enterprise') {
-                    window.location.href = 'mailto:sales@instart.in?subject=Enterprise Plan Inquiry'
+                    globalThis.location.href = 'mailto:sales@instart.in?subject=Enterprise Plan Inquiry'
                   } else if (plan.name === 'Pro') {
-                    window.location.href = '/signup?plan=pro'
+                    globalThis.location.href = '/signup?plan=pro'
                   } else {
-                    window.location.href = '/signup'
+                    globalThis.location.href = '/signup'
                   }
                 }}
                 className={`w-full h-11 md:h-12 rounded-full font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] text-sm md:text-base ${plan.popular
@@ -232,9 +229,10 @@ export function Pricing() {
                 <ArrowRight className="ml-2 w-3.5 md:w-4 h-3.5 md:h-4" />
               </Button>
             </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
+          ))
+          }
+        </motion.div >
+      </div >
+    </section >
   )
 }

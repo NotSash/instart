@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronLeft, Camera, MapPin, Globe, ChevronRight,
-  Check, Sparkles, ArrowRight, IndianRupee
+  Check, Sparkles, ArrowRight
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { submitFounderOnboarding } from '@/app/actions/onboarding'
@@ -35,7 +35,7 @@ const indianCities = [
 ]
 
 export default function FounderOnboarding() {
-  const router = useRouter()
+  useRouter()
   const [step, setStep] = useState(1)
   const [direction, setDirection] = useState(1)
 
@@ -72,34 +72,28 @@ export default function FounderOnboarding() {
 
   const [validationError, setValidationError] = useState('')
 
-  const goNext = () => {
-    // Validate required fields for each step
-    if (step === 1 && !city) {
-      setValidationError('Please select your city')
-      return
-    }
+  const validateStep = (): string | null => {
+    if (step === 1 && !city) return 'Please select your city'
     if (step === 2) {
-      if (!startupName.trim()) { setValidationError('Please enter your startup name'); return }
-      if (!pitch.trim()) { setValidationError('Please enter your one-line pitch'); return }
-      if (selectedSectors.length === 0) { setValidationError('Please select at least one sector'); return }
+      if (!startupName.trim()) return 'Please enter your startup name'
+      if (!pitch.trim()) return 'Please enter your one-line pitch'
+      if (selectedSectors.length === 0) return 'Please select at least one sector'
     }
-    if (step === 3 && !selectedStage) {
-      setValidationError('Please select your startup stage')
-      return
-    }
+    if (step === 3 && !selectedStage) return 'Please select your startup stage'
     if (step === 4) {
-      if (isRaising === null) { setValidationError('Please indicate if you are currently raising'); return }
-      if (isRaising) {
-        if (!raiseAmount.trim()) { setValidationError('Please enter how much you are looking to raise'); return }
-        if (roundType.length === 0) { setValidationError('Please select the type of round'); return }
-      }
-      if (hasRaisedBefore === null) { setValidationError('Please indicate if you have raised before'); return }
-      if (hasRaisedBefore && !previousRaise.trim()) { setValidationError('Please enter how much you have raised in total'); return }
+      if (isRaising === null) return 'Please indicate if you are currently raising'
+      if (isRaising && !raiseAmount.trim()) return 'Please enter how much you are looking to raise'
+      if (isRaising && roundType.length === 0) return 'Please select the type of round'
+      if (hasRaisedBefore === null) return 'Please indicate if you have raised before'
+      if (hasRaisedBefore && !previousRaise.trim()) return 'Please enter how much you have raised in total'
     }
-    if (step === 5 && selectedInvestorTypes.length === 0) {
-      setValidationError('Please select at least one investor type')
-      return
-    }
+    if (step === 5 && selectedInvestorTypes.length === 0) return 'Please select at least one investor type'
+    return null
+  }
+
+  const goNext = () => {
+    const error = validateStep()
+    if (error) { setValidationError(error); return }
     if (step < TOTAL_STEPS) {
       setDirection(1)
       setStep(step + 1)
@@ -143,7 +137,7 @@ export default function FounderOnboarding() {
       setValidationError(result.error)
       return
     }
-    window.location.href = '/app/feed'
+    globalThis.location.href = '/app/feed'
   }
 
   const toggleSector = (s: string) => {
@@ -246,8 +240,9 @@ export default function FounderOnboarding() {
 
                 {/* Bio */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Your tagline</label>
+                  <label htmlFor="bio" className="block text-sm font-medium text-foreground mb-2">Your tagline</label>
                   <input
+                    id="bio"
                     value={bio}
                     onChange={e => setBio(e.target.value)}
                     placeholder="Building the future of Indian agriculture"
@@ -257,10 +252,11 @@ export default function FounderOnboarding() {
 
                 {/* City */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="city" className="block text-sm font-medium text-foreground mb-2">
                     <MapPin className="w-4 h-4 inline mr-1" />City
                   </label>
                   <select
+                    id="city"
                     value={city}
                     onChange={e => setCity(e.target.value)}
                     className={`${inputClass} appearance-none cursor-pointer`}
@@ -284,20 +280,20 @@ export default function FounderOnboarding() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Startup name</label>
-                  <input value={startupName} onChange={e => setStartupName(e.target.value)} placeholder="Acme Technologies" className={inputClass} />
+                  <label htmlFor="startupName" className="block text-sm font-medium text-foreground mb-2">Startup name</label>
+                  <input id="startupName" value={startupName} onChange={e => setStartupName(e.target.value)} placeholder="Acme Technologies" className={inputClass} />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">One-line pitch</label>
+                  <label htmlFor="pitch" className="block text-sm font-medium text-foreground mb-2">One-line pitch</label>
                   <div className="relative">
-                    <input value={pitch} onChange={e => setPitch(e.target.value.slice(0, 120))} placeholder="We make X for Y using Z" className={inputClass} />
+                    <input id="pitch" value={pitch} onChange={e => setPitch(e.target.value.slice(0, 120))} placeholder="We make X for Y using Z" className={inputClass} />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">{pitch.length}/120</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-3">Sector / Industry <span className="text-muted-foreground text-xs">(pick up to 3)</span></label>
+                  <span className="block text-sm font-medium text-foreground mb-3">Sector / Industry <span className="text-muted-foreground text-xs">(pick up to 3)</span></span>
                   <div className="flex flex-wrap gap-2">
                     {sectors.map(s => (
                       <motion.button
@@ -318,10 +314,10 @@ export default function FounderOnboarding() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="website" className="block text-sm font-medium text-foreground mb-2">
                     <Globe className="w-4 h-4 inline mr-1" />Website <span className="text-muted-foreground text-xs">(optional)</span>
                   </label>
-                  <input value={website} onChange={e => setWebsite(e.target.value)} placeholder="https://yourstartup.com" className={inputClass} />
+                  <input id="website" value={website} onChange={e => setWebsite(e.target.value)} placeholder="https://yourstartup.com" className={inputClass} />
                 </div>
               </div>
             )}
@@ -337,7 +333,7 @@ export default function FounderOnboarding() {
 
                 {/* Stage Selector */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-4">Stage</label>
+                  <span className="block text-sm font-medium text-foreground mb-4">Stage</span>
                   <div className="flex flex-wrap gap-3 justify-center">
                     {stages.map((s, i) => (
                       <motion.button
@@ -366,20 +362,20 @@ export default function FounderOnboarding() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-xs text-muted-foreground mb-1.5">Monthly Revenue</label>
+                      <label htmlFor="revenue" className="block text-xs text-muted-foreground mb-1.5">Monthly Revenue</label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">₹</span>
-                        <input value={revenue} onChange={e => setRevenue(e.target.value)} placeholder="0" className={`${inputClass} pl-7`} />
+                        <input id="revenue" value={revenue} onChange={e => setRevenue(e.target.value)} placeholder="0" className={`${inputClass} pl-7`} />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs text-muted-foreground mb-1.5">Users / Customers</label>
-                      <input value={users} onChange={e => setUsers(e.target.value)} placeholder="0" className={inputClass} />
+                      <label htmlFor="users" className="block text-xs text-muted-foreground mb-1.5">Users / Customers</label>
+                      <input id="users" value={users} onChange={e => setUsers(e.target.value)} placeholder="0" className={inputClass} />
                     </div>
                     <div>
-                      <label className="block text-xs text-muted-foreground mb-1.5">Monthly Growth</label>
+                      <label htmlFor="growthRate" className="block text-xs text-muted-foreground mb-1.5">Monthly Growth</label>
                       <div className="relative">
-                        <input value={growthRate} onChange={e => setGrowthRate(e.target.value)} placeholder="0" className={`${inputClass} pr-8`} />
+                        <input id="growthRate" value={growthRate} onChange={e => setGrowthRate(e.target.value)} placeholder="0" className={`${inputClass} pr-8`} />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">%</span>
                       </div>
                     </div>
@@ -399,7 +395,7 @@ export default function FounderOnboarding() {
 
                 {/* Currently Raising */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-3">Are you currently raising?</label>
+                  <span className="block text-sm font-medium text-foreground mb-3">Are you currently raising?</span>
                   <div className="flex gap-3">
                     {[true, false].map(val => (
                       <motion.button
@@ -421,15 +417,15 @@ export default function FounderOnboarding() {
                 {isRaising && (
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">How much are you looking to raise?</label>
+                      <label htmlFor="raiseAmount" className="block text-sm font-medium text-foreground mb-2">How much are you looking to raise?</label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">₹</span>
-                        <input value={raiseAmount} onChange={e => setRaiseAmount(e.target.value)} placeholder="50,00,000" className={`${inputClass} pl-7`} />
+                        <input id="raiseAmount" value={raiseAmount} onChange={e => setRaiseAmount(e.target.value)} placeholder="50,00,000" className={`${inputClass} pl-7`} />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-3">What type of round?</label>
+                      <span className="block text-sm font-medium text-foreground mb-3">What type of round?</span>
                       <div className="flex flex-wrap gap-2">
                         {roundTypes.map(r => (
                           <motion.button
@@ -452,7 +448,7 @@ export default function FounderOnboarding() {
 
                 {/* Raised Before */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-3">Have you raised before?</label>
+                  <span className="block text-sm font-medium text-foreground mb-3">Have you raised before?</span>
                   <div className="flex gap-3">
                     {[true, false].map(val => (
                       <motion.button
@@ -473,10 +469,10 @@ export default function FounderOnboarding() {
 
                 {hasRaisedBefore && (
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                    <label className="block text-sm font-medium text-foreground mb-2">How much total?</label>
+                    <label htmlFor="previousRaise" className="block text-sm font-medium text-foreground mb-2">How much total?</label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">₹</span>
-                      <input value={previousRaise} onChange={e => setPreviousRaise(e.target.value)} placeholder="1,00,00,000" className={`${inputClass} pl-7`} />
+                      <input id="previousRaise" value={previousRaise} onChange={e => setPreviousRaise(e.target.value)} placeholder="1,00,00,000" className={`${inputClass} pl-7`} />
                     </div>
                   </motion.div>
                 )}
@@ -513,7 +509,7 @@ export default function FounderOnboarding() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Anything else investors should know?</label>
+                  <label htmlFor="additionalInfo" className="block text-sm font-medium text-foreground mb-2">Anything else investors should know?</label>
                   <textarea
                     value={additionalInfo}
                     onChange={e => setAdditionalInfo(e.target.value)}
@@ -546,7 +542,7 @@ export default function FounderOnboarding() {
 
                 {/* Confetti particles */}
                 <div className="relative">
-                  {[...Array(12)].map((_, i) => (
+                  {Array.from({ length: 12 }).map((_, i) => (
                     <motion.div
                       key={i}
                       className={`absolute w-2 h-2 rounded-full ${['bg-emerald-500', 'bg-cyan-500', 'bg-purple-500', 'bg-amber-500'][i % 4]

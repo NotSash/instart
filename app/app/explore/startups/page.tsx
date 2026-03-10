@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AppLayout } from '@/components/app-layout'
 import {
-    Search, SlidersHorizontal, X, MapPin, TrendingUp,
+    Search, SlidersHorizontal, X, MapPin,
     ChevronLeft, ChevronRight, Loader2
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -21,7 +21,7 @@ const stageLabels: Record<string, string> = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type StartupRow = any
 
-function ScoreBadge({ score }: { score: number | null }) {
+function ScoreBadge({ score }: Readonly<{ score: number | null }>) {
     if (!score) return null
     const color = score >= 80 ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10' : score >= 60 ? 'text-amber-400 border-amber-500/30 bg-amber-500/10' : 'text-red-400 border-red-500/30 bg-red-500/10'
     return (
@@ -70,12 +70,12 @@ export default function ExploreStartupsPage() {
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">Sector</h4>
                 <div className="space-y-2">
                     {sectors.map(s => (
-                        <label key={s} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleFilter(selectedSectors, setSelectedSectors, s)}>
+                        <button key={s} type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => toggleFilter(selectedSectors, setSelectedSectors, s)}>
                             <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${selectedSectors.includes(s) ? 'bg-emerald-500 border-emerald-500' : 'border-white/20 group-hover:border-white/40'}`}>
                                 {selectedSectors.includes(s) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                             </div>
                             <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{s}</span>
-                        </label>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -84,12 +84,12 @@ export default function ExploreStartupsPage() {
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">Stage</h4>
                 <div className="space-y-2">
                     {stagesList.map(s => (
-                        <label key={s} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleFilter(selectedStages, setSelectedStages, s)}>
+                        <button key={s} type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => toggleFilter(selectedStages, setSelectedStages, s)}>
                             <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${selectedStages.includes(s) ? 'bg-emerald-500 border-emerald-500' : 'border-white/20 group-hover:border-white/40'}`}>
                                 {selectedStages.includes(s) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                             </div>
                             <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{stageLabels[s] || s}</span>
-                        </label>
+                        </button>
                     ))}
                 </div>
             </div>

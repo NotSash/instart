@@ -156,7 +156,7 @@ export default function MessagingPage() {
                                             <span className="text-sm font-medium text-foreground truncate">{conv.other_participant?.full_name || 'User'}</span>
                                             <span className="text-xs text-muted-foreground flex-shrink-0 ml-2">{timeAgo(conv.last_message?.created_at || conv.created_at)}</span>
                                         </div>
-                                        <p className="text-xs text-muted-foreground capitalize">{conv.other_participant?.role?.replace('_', ' ') || ''}</p>
+                                        <p className="text-xs text-muted-foreground capitalize">{conv.other_participant?.role?.replaceAll('_', ' ') || ''}</p>
                                         <p className="text-xs text-muted-foreground truncate mt-0.5">{conv.last_message?.content || 'No messages yet'}</p>
                                     </div>
                                     {conv.unread_count > 0 && (
@@ -182,7 +182,7 @@ export default function MessagingPage() {
                                 </div>
                                 <div className="flex-1">
                                     <p className="text-sm font-medium text-foreground">{activeConv.other_participant?.full_name || 'User'}</p>
-                                    <p className="text-xs text-muted-foreground capitalize">{activeConv.other_participant?.role?.replace('_', ' ') || ''}</p>
+                                    <p className="text-xs text-muted-foreground capitalize">{activeConv.other_participant?.role?.replaceAll('_', ' ') || ''}</p>
                                 </div>
                             </div>
 

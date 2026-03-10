@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
-    Check, Sparkles, Shield, Users, TrendingUp, Eye, Zap,
-    Lock, Star, ArrowRight, Crown
+    Check,
+    Star, ArrowRight, Crown
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -103,7 +103,7 @@ export default function PricingPage() {
 
                     {/* Toggle */}
                     <div className="flex items-center justify-center gap-3 mt-8">
-                        <span className={`text-sm ${!annual ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>Monthly</span>
+                        <span className={`text-sm ${annual ? 'text-muted-foreground' : 'text-foreground font-medium'}`}>Monthly</span>
                         <button onClick={() => setAnnual(!annual)} className={`relative w-12 h-6 rounded-full transition-colors ${annual ? 'bg-emerald-500' : 'bg-white/10'}`}>
                             <motion.div className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow" animate={{ left: annual ? 26 : 2 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
                         </button>
@@ -137,11 +137,11 @@ export default function PricingPage() {
                             <Button
                                 onClick={() => {
                                     if (plan.name === 'Enterprise') {
-                                        window.location.href = 'mailto:sales@instart.in?subject=Enterprise Plan Inquiry'
+                                        globalThis.location.href = 'mailto:sales@instart.in?subject=Enterprise Plan Inquiry'
                                     } else if (plan.name === 'Pro') {
-                                        window.location.href = '/signup?plan=pro'
+                                        globalThis.location.href = '/signup?plan=pro'
                                     } else {
-                                        window.location.href = '/signup'
+                                        globalThis.location.href = '/signup'
                                     }
                                 }}
                                 className={`w-full mb-6 ${plan.popular ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-white/5 hover:bg-white/10 text-foreground border border-white/10'}`}>

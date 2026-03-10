@@ -23,7 +23,7 @@ const tabs = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DataRow = any
 
-function Toggle({ enabled, onChange }: { enabled: boolean; onChange: () => void }) {
+function Toggle({ enabled, onChange }: Readonly<{ enabled: boolean; onChange: () => void }>) {
     return (
         <button onClick={onChange} className={`relative w-11 h-6 rounded-full transition-colors ${enabled ? 'bg-emerald-500' : 'bg-white/10'}`}>
             <motion.div animate={{ x: enabled ? 20 : 2 }} className="w-5 h-5 rounded-full bg-white absolute top-0.5" transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
@@ -152,23 +152,23 @@ export default function SettingsPage() {
 
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="text-sm text-muted-foreground mb-1.5 block">Full Name</label>
-                                                <input value={fullName} onChange={e => setFullName(e.target.value)}
+                                                <label htmlFor="settingsFullName" className="text-sm text-muted-foreground mb-1.5 block">Full Name</label>
+                                                <input id="settingsFullName" value={fullName} onChange={e => setFullName(e.target.value)}
                                                     className="w-full h-10 px-4 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm focus:outline-none focus:border-emerald-500/50 transition-all" />
                                             </div>
                                             <div>
-                                                <label className="text-sm text-muted-foreground mb-1.5 block">Bio</label>
-                                                <textarea value={bio} onChange={e => setBio(e.target.value)} rows={3}
+                                                <label htmlFor="settingsBio" className="text-sm text-muted-foreground mb-1.5 block">Bio</label>
+                                                <textarea id="settingsBio" value={bio} onChange={e => setBio(e.target.value)} rows={3}
                                                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm focus:outline-none focus:border-emerald-500/50 transition-all resize-none" />
                                             </div>
                                             <div>
-                                                <label className="text-sm text-muted-foreground mb-1.5 block">City</label>
-                                                <input value={city} onChange={e => setCity(e.target.value)}
+                                                <label htmlFor="settingsCity" className="text-sm text-muted-foreground mb-1.5 block">City</label>
+                                                <input id="settingsCity" value={city} onChange={e => setCity(e.target.value)}
                                                     className="w-full h-10 px-4 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm focus:outline-none focus:border-emerald-500/50 transition-all" />
                                             </div>
                                             <div>
-                                                <label className="text-sm text-muted-foreground mb-1.5 block">LinkedIn URL</label>
-                                                <input value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/..."
+                                                <label htmlFor="settingsLinkedin" className="text-sm text-muted-foreground mb-1.5 block">LinkedIn URL</label>
+                                                <input id="settingsLinkedin" value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/..."
                                                     className="w-full h-10 px-4 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm focus:outline-none focus:border-emerald-500/50 transition-all" />
                                             </div>
                                         </div>
@@ -181,7 +181,7 @@ export default function SettingsPage() {
                                     <div className="glass-card p-6">
                                         <h3 className="text-lg font-semibold text-foreground mb-4">Change Password</h3>
                                         <div className="flex gap-3">
-                                            <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="New password (min 6 chars)"
+                                            <input id="settingsPassword" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="New password (min 6 chars)"
                                                 className="flex-1 h-10 px-4 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm focus:outline-none focus:border-emerald-500/50 transition-all" />
                                             <Button onClick={handleChangePassword} variant="outline" className="border-white/10">Update</Button>
                                         </div>

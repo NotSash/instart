@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     ChevronLeft, Camera, MapPin, ChevronRight, Check, Sparkles,
-    ArrowRight, Plus, Trash2, Linkedin
+    ArrowRight, Plus, Trash2
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { submitInvestorOnboarding } from '@/app/actions/onboarding'
@@ -38,7 +38,7 @@ interface PortfolioItem {
 }
 
 export default function InvestorOnboarding() {
-    const router = useRouter()
+    useRouter()
     const [step, setStep] = useState(1)
     const [direction, setDirection] = useState(1)
     const [validationError, setValidationError] = useState('')
@@ -110,7 +110,7 @@ export default function InvestorOnboarding() {
             setValidationError(result.error)
             return
         }
-        window.location.href = '/app/explore/startups'
+        globalThis.location.href = '/app/explore/startups'
     }
 
     const toggleSector = (s: string) => {
@@ -198,19 +198,19 @@ export default function InvestorOnboarding() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2">Professional title / role</label>
-                                    <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Angel Investor, Partner at XYZ Fund" className={inputClass} />
+                                    <label htmlFor="invTitle" className="block text-sm font-medium text-foreground mb-2">Professional title / role</label>
+                                    <input id="invTitle" value={title} onChange={e => setTitle(e.target.value)} placeholder="Angel Investor, Partner at XYZ Fund" className={inputClass} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2"><MapPin className="w-4 h-4 inline mr-1" />City</label>
-                                    <select value={city} onChange={e => setCity(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
+                                    <label htmlFor="invCity" className="block text-sm font-medium text-foreground mb-2"><MapPin className="w-4 h-4 inline mr-1" />City</label>
+                                    <select id="invCity" value={city} onChange={e => setCity(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
                                         <option value="" className="bg-[#111]">Select your city</option>
                                         {indianCities.map(c => <option key={c} value={c} className="bg-[#111]">{c}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2"><Linkedin className="w-4 h-4 inline mr-1" />LinkedIn <span className="text-xs text-muted-foreground">(optional)</span></label>
-                                    <input value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/yourprofile" className={inputClass} />
+                                    <label htmlFor="invLinkedin" className="block text-sm font-medium text-foreground mb-2"><svg className="w-4 h-4 inline mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>LinkedIn <span className="text-xs text-muted-foreground">(optional)</span></label>
+                                    <input id="invLinkedin" value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/yourprofile" className={inputClass} />
                                 </div>
                             </div>
                         )}
@@ -230,7 +230,7 @@ export default function InvestorOnboarding() {
                                     ))}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-4">What stages do you prefer?</label>
+                                    <span className="block text-sm font-medium text-foreground mb-4">What stages do you prefer?</span>
                                     <div className="flex flex-wrap gap-3 justify-center">
                                         {stages.map((s, i) => (
                                             <motion.button key={s} type="button" onClick={() => toggleStage(s)} whileTap={{ scale: 0.95 }}
@@ -251,7 +251,7 @@ export default function InvestorOnboarding() {
                                     <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2" style={{ letterSpacing: '-0.02em' }}>Tell us about your investment style</h1>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-3">Typical check size range</label>
+                                    <label htmlFor="checkMin" className="block text-sm font-medium text-foreground mb-3">Typical check size range</label>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="relative">
                                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">₹</span>
@@ -266,7 +266,7 @@ export default function InvestorOnboarding() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2">Investments made so far</label>
+                                    <span className="block text-sm font-medium text-foreground mb-2">Investments made so far</span>
                                     <div className="flex flex-wrap gap-2">
                                         {investmentCounts.map(c => (
                                             <motion.button key={c} type="button" onClick={() => setInvestmentCount(c)} whileTap={{ scale: 0.95 }}
@@ -277,8 +277,8 @@ export default function InvestorOnboarding() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2">Investment thesis or philosophy</label>
-                                    <textarea value={thesis} onChange={e => setThesis(e.target.value)} placeholder="What do you look for in founders and startups?" rows={4} className={`${inputClass} h-auto py-3 resize-none`} />
+                                    <label htmlFor="thesis" className="block text-sm font-medium text-foreground mb-2">Investment thesis or philosophy</label>
+                                    <textarea id="thesis" value={thesis} onChange={e => setThesis(e.target.value)} placeholder="What do you look for in founders and startups?" rows={4} className={`${inputClass} h-auto py-3 resize-none`} />
                                 </div>
                             </div>
                         )}
@@ -292,7 +292,7 @@ export default function InvestorOnboarding() {
                                 </div>
 
                                 {portfolio.map((item, i) => (
-                                    <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-4 space-y-3">
+                                    <motion.div key={`portfolio-${i}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-4 space-y-3">
                                         <div className="flex items-center justify-between">
                                             <span className="text-sm font-medium text-foreground">Investment {i + 1}</span>
                                             <button onClick={() => removePortfolioItem(i)} className="text-muted-foreground hover:text-red-400 transition-colors"><Trash2 className="w-4 h-4" /></button>
@@ -356,7 +356,7 @@ export default function InvestorOnboarding() {
                                 </motion.div>
 
                                 <div className="relative">
-                                    {[...Array(12)].map((_, i) => (
+                                    {Array.from({ length: 12 }).map((_, i) => (
                                         <motion.div key={i} className={`absolute w-2 h-2 rounded-full ${['bg-emerald-500', 'bg-cyan-500', 'bg-purple-500', 'bg-amber-500'][i % 4]}`}
                                             initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
                                             animate={{ x: (Math.random() - 0.5) * 300, y: (Math.random() - 0.5) * 200 - 50, opacity: 0, scale: 0 }}

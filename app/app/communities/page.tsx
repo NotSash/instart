@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { AppLayout } from '@/components/app-layout'
-import { Search, Users, TrendingUp, MessageCircle, Hash, Loader2 } from 'lucide-react'
+import { Search, Users, MessageCircle, Hash, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { fetchAllCommunities, toggleCommunityMembership } from '@/app/actions/communities'

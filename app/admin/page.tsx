@@ -106,7 +106,7 @@ export default function AdminPage() {
                                 {Object.entries(stats.roles || {}).map(([role, count]) => (
                                     <div key={role} className="text-center p-4 rounded-xl bg-white/[0.02]">
                                         <p className="text-2xl font-bold text-foreground">{count as number}</p>
-                                        <p className="text-xs text-muted-foreground capitalize mt-1">{role.replace('_', ' ')}s</p>
+                                        <p className="text-xs text-muted-foreground capitalize mt-1">{role.replaceAll('_', ' ')}s</p>
                                     </div>
                                 ))}
                             </div>
@@ -159,7 +159,7 @@ export default function AdminPage() {
                                     <div key={report.id} className="glass-card p-5">
                                         <div className="flex items-start justify-between">
                                             <div>
-                                                <p className="text-sm font-medium text-foreground capitalize">{report.reason?.replace(/_/g, ' ')}</p>
+                                                <p className="text-sm font-medium text-foreground capitalize">{report.reason?.replaceAll('_', ' ')}</p>
                                                 {report.description && <p className="text-sm text-muted-foreground mt-1">{report.description}</p>}
                                                 <p className="text-xs text-muted-foreground mt-2">Reported by: {report.reporter?.full_name || report.reporter?.email || 'Unknown'}</p>
                                             </div>

@@ -5,13 +5,13 @@ import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-export default function Error({
+export default function ErrorPage({
     error,
     reset,
-}: {
-    error: Error & { digest?: string }
+}: Readonly<{
+    error: globalThis.Error & { digest?: string }
     reset: () => void
-}) {
+}>) {
     return (
         <div className="min-h-screen bg-[#050505] flex items-center justify-center px-4">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-md">

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Home, ArrowLeft, Search, Compass } from 'lucide-react'
+import { Home, Compass } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
@@ -44,7 +44,7 @@ export default function NotFound() {
                 </motion.div>
 
                 {/* Decorative floating dots */}
-                {[...Array(6)].map((_, i) => (
+                {Array.from({ length: 6 }).map((_, i) => (
                     <motion.div
                         key={i}
                         className="absolute w-1.5 h-1.5 rounded-full bg-emerald-500/30"

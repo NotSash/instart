@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     ChevronLeft, Camera, MapPin, ChevronRight, Check, Sparkles,
-    ArrowRight, Linkedin
+    ArrowRight
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { submitCofounderOnboarding } from '@/app/actions/onboarding'
@@ -56,7 +56,7 @@ function getPillColor(skill: string, selected: boolean) {
 }
 
 export default function CofounderOnboarding() {
-    const router = useRouter()
+    useRouter()
     const [step, setStep] = useState(1)
     const [direction, setDirection] = useState(1)
     const [validationError, setValidationError] = useState('')
@@ -85,25 +85,31 @@ export default function CofounderOnboarding() {
 
     const progress = (step / TOTAL_STEPS) * 100
 
-    const goNext = () => {
+    const validateStep = (): string | null => {
         if (step === 1) {
-            if (!status) { setValidationError('Please select your current status'); return }
-            if (!city) { setValidationError('Please select your city'); return }
+            if (!status) return 'Please select your current status'
+            if (!city) return 'Please select your city'
         }
         if (step === 2) {
-            if (mySkills.length === 0) { setValidationError('Please select at least one skill'); return }
-            if (!experience.trim()) { setValidationError('Please describe your experience'); return }
+            if (mySkills.length === 0) return 'Please select at least one skill'
+            if (!experience.trim()) return 'Please describe your experience'
         }
         if (step === 3) {
-            if (wantedSkills.length === 0) { setValidationError('Please select at least one skill you\'re looking for'); return }
-            if (!commitment) { setValidationError('Please select your commitment level'); return }
-            if (hasIdea === null) { setValidationError('Please indicate if you have a startup idea'); return }
-            if (hasIdea && !ideaDescription.trim()) { setValidationError('Please describe your idea'); return }
+            if (wantedSkills.length === 0) return 'Please select at least one skill you\'re looking for'
+            if (!commitment) return 'Please select your commitment level'
+            if (hasIdea === null) return 'Please indicate if you have a startup idea'
+            if (hasIdea && !ideaDescription.trim()) return 'Please describe your idea'
         }
         if (step === 4) {
-            if (selectedSectors.length === 0) { setValidationError('Please select at least one sector'); return }
-            if (!equityPref) { setValidationError('Please select your equity preference'); return }
+            if (selectedSectors.length === 0) return 'Please select at least one sector'
+            if (!equityPref) return 'Please select your equity preference'
         }
+        return null
+    }
+
+    const goNext = () => {
+        const error = validateStep()
+        if (error) { setValidationError(error); return }
         setValidationError('')
         if (step < TOTAL_STEPS) { setDirection(1); setStep(step + 1) }
     }
@@ -131,7 +137,7 @@ export default function CofounderOnboarding() {
             setValidationError(result.error)
             return
         }
-        window.location.href = '/app/explore/cofounders'
+        globalThis.location.href = '/app/explore/cofounders'
     }
 
     const toggleSkill = (list: string[], setList: (v: string[]) => void, s: string) => {
@@ -201,22 +207,22 @@ export default function CofounderOnboarding() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2">Current role / status</label>
-                                    <select value={status} onChange={e => setStatus(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
+                                    <label htmlFor="status" className="block text-sm font-medium text-foreground mb-2">Current role / status</label>
+                                    <select id="status" value={status} onChange={e => setStatus(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
                                         <option value="" className="bg-[#111]">Select your status</option>
                                         {statuses.map(s => <option key={s} value={s} className="bg-[#111]">{s}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2"><MapPin className="w-4 h-4 inline mr-1" />City</label>
-                                    <select value={city} onChange={e => setCity(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
+                                    <label htmlFor="cofCity" className="block text-sm font-medium text-foreground mb-2"><MapPin className="w-4 h-4 inline mr-1" />City</label>
+                                    <select id="cofCity" value={city} onChange={e => setCity(e.target.value)} className={`${inputClass} appearance-none cursor-pointer`}>
                                         <option value="" className="bg-[#111]">Select your city</option>
                                         {indianCities.map(c => <option key={c} value={c} className="bg-[#111]">{c}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2"><Linkedin className="w-4 h-4 inline mr-1" />LinkedIn</label>
-                                    <input value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/yourprofile" className={inputClass} />
+                                    <label htmlFor="linkedin" className="block text-sm font-medium text-foreground mb-2"><svg className="w-4 h-4 inline mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>LinkedIn</label>
+                                    <input id="linkedin" value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/yourprofile" className={inputClass} />
                                 </div>
                             </div>
                         )}
@@ -237,8 +243,8 @@ export default function CofounderOnboarding() {
                                     ))}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2">Describe your experience</label>
-                                    <textarea value={experience} onChange={e => setExperience(e.target.value)} placeholder="What are you great at? What&apos;s your background?" rows={4} className={`${inputClass} h-auto py-3 resize-none`} />
+                                    <label htmlFor="experience" className="block text-sm font-medium text-foreground mb-2">Describe your experience</label>
+                                    <textarea id="experience" value={experience} onChange={e => setExperience(e.target.value)} placeholder="What are you great at? What&apos;s your background?" rows={4} className={`${inputClass} h-auto py-3 resize-none`} />
                                 </div>
                             </div>
                         )}
@@ -258,7 +264,7 @@ export default function CofounderOnboarding() {
                                     ))}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-3">Commitment level</label>
+                                    <span className="block text-sm font-medium text-foreground mb-3">Commitment level</span>
                                     <div className="flex flex-wrap gap-2">
                                         {commitmentLevels.map(c => (
                                             <motion.button key={c} type="button" onClick={() => setCommitment(c)} whileTap={{ scale: 0.95 }}
@@ -269,7 +275,7 @@ export default function CofounderOnboarding() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-3">Do you have a startup idea already?</label>
+                                    <span className="block text-sm font-medium text-foreground mb-3">Do you have a startup idea already?</span>
                                     <div className="flex gap-3">
                                         {[true, false].map(val => (
                                             <motion.button key={String(val)} type="button" onClick={() => setHasIdea(val)} whileTap={{ scale: 0.95 }}
@@ -294,7 +300,7 @@ export default function CofounderOnboarding() {
                                     <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2" style={{ letterSpacing: '-0.02em' }}>A few more details</h1>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-3">Preferred sectors</label>
+                                    <span className="block text-sm font-medium text-foreground mb-3">Preferred sectors</span>
                                     <div className="flex flex-wrap gap-2">
                                         {sectors.map(s => (
                                             <motion.button key={s} type="button" onClick={() => toggleSector(s)} whileTap={{ scale: 0.95 }}
@@ -314,7 +320,7 @@ export default function CofounderOnboarding() {
                                     </button>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-foreground mb-3">Equity expectations</label>
+                                    <span className="block text-sm font-medium text-foreground mb-3">Equity expectations</span>
                                     <div className="flex flex-wrap gap-2">
                                         {equityOptions.map(e => (
                                             <motion.button key={e} type="button" onClick={() => setEquityPref(e)} whileTap={{ scale: 0.95 }}
@@ -337,7 +343,7 @@ export default function CofounderOnboarding() {
                                 </motion.div>
 
                                 <div className="relative">
-                                    {[...Array(12)].map((_, i) => (
+                                    {Array.from({ length: 12 }).map((_, i) => (
                                         <motion.div key={i} className={`absolute w-2 h-2 rounded-full ${['bg-purple-500', 'bg-cyan-500', 'bg-emerald-500', 'bg-amber-500'][i % 4]}`}
                                             initial={{ x: 0, y: 0, opacity: 1, scale: 1 }} animate={{ x: (Math.random() - 0.5) * 300, y: (Math.random() - 0.5) * 200 - 50, opacity: 0, scale: 0 }}
                                             transition={{ duration: 1.5, delay: 0.3 + i * 0.05, ease: 'easeOut' }} style={{ left: '50%', top: '-40px' }}

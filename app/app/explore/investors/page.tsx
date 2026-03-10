@@ -74,12 +74,12 @@ export default function ExploreInvestorsPage() {
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">Sectors of Interest</h4>
                 <div className="space-y-2">
                     {sectors.map(s => (
-                        <label key={s} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleFilter(selectedSectors, setSelectedSectors, s)}>
+                        <button key={s} type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => toggleFilter(selectedSectors, setSelectedSectors, s)}>
                             <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${selectedSectors.includes(s) ? 'bg-cyan-500 border-cyan-500' : 'border-white/20 group-hover:border-white/40'}`}>
                                 {selectedSectors.includes(s) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                             </div>
                             <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{s}</span>
-                        </label>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -88,23 +88,23 @@ export default function ExploreInvestorsPage() {
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">Preferred Stages</h4>
                 <div className="space-y-2">
                     {stagesList.map(s => (
-                        <label key={s} className="flex items-center gap-2.5 cursor-pointer group" onClick={() => toggleFilter(selectedStages, setSelectedStages, s)}>
+                        <button key={s} type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => toggleFilter(selectedStages, setSelectedStages, s)}>
                             <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${selectedStages.includes(s) ? 'bg-cyan-500 border-cyan-500' : 'border-white/20 group-hover:border-white/40'}`}>
                                 {selectedStages.includes(s) && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                             </div>
                             <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{stageLabels[s] || s}</span>
-                        </label>
+                        </button>
                     ))}
                 </div>
             </div>
 
             <div>
-                <label className="flex items-center gap-2.5 cursor-pointer group" onClick={() => setActiveOnly(!activeOnly)}>
+                <button type="button" className="flex items-center gap-2.5 cursor-pointer group text-left" onClick={() => setActiveOnly(!activeOnly)}>
                     <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${activeOnly ? 'bg-cyan-500 border-cyan-500' : 'border-white/20 group-hover:border-white/40'}`}>
                         {activeOnly && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                     </div>
                     <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Actively Investing Only</span>
-                </label>
+                </button>
             </div>
 
             <Button onClick={() => { setSelectedSectors([]); setSelectedStages([]); setActiveOnly(false) }} variant="ghost" className="w-full text-muted-foreground text-sm">

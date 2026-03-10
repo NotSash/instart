@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* stylelint-disable */
 @custom-variant dark (&:is(.dark *));
+/* stylelint-enable */
 
 :root {
   --background: oklch(1 0 0);
@@ -119,6 +121,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

@@ -19,7 +19,6 @@ import {
   Zap,
   Star,
   ChevronRight,
-  BarChart2,
   Eye,
   Bookmark,
   Filter,
@@ -30,7 +29,7 @@ import {
   CircleDollarSign,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+// Badge import removed - unused
 
 // ─── Static demo data ────────────────────────────────────────────────────────
 

@@ -112,14 +112,13 @@ export function Testimonials() {
             >
               {/* Quote icon */}
               <Quote
-                className={`absolute top-4 md:top-6 right-4 md:right-6 w-8 md:w-10 h-8 md:h-10 opacity-10 ${
-                  testimonial.color === "emerald" ? "text-emerald-400" : "text-cyan-400"
-                }`}
+                className={`absolute top-4 md:top-6 right-4 md:right-6 w-8 md:w-10 h-8 md:h-10 opacity-10 ${testimonial.color === "emerald" ? "text-emerald-400" : "text-cyan-400"
+                  }`}
               />
 
               {/* Stars */}
               <div className="flex gap-0.5 md:gap-1 mb-4 md:mb-6">
-                {[...Array(5)].map((_, i) => (
+                {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
                     className="w-3.5 md:w-4 h-3.5 md:h-4 fill-emerald-400 text-emerald-400"
@@ -135,11 +134,10 @@ export function Testimonials() {
               {/* Author */}
               <div className="flex items-center gap-3 md:gap-4">
                 <div
-                  className={`w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center text-base md:text-lg font-bold ${
-                    testimonial.color === "emerald"
-                      ? "bg-emerald-500/20 text-emerald-400"
-                      : "bg-cyan-500/20 text-cyan-400"
-                  }`}
+                  className={`w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center text-base md:text-lg font-bold ${testimonial.color === "emerald"
+                    ? "bg-emerald-500/20 text-emerald-400"
+                    : "bg-cyan-500/20 text-cyan-400"
+                    }`}
                 >
                   {testimonial.avatar}
                 </div>
