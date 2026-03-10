@@ -13,6 +13,9 @@ const PUBLIC_ROUTES = new Set([
     '/auth/callback',
 ])
 
+// Only treat known static asset extensions as public (not arbitrary dotted paths)
+const STATIC_ASSET_EXTENSIONS = /\.(?:css|js|json|map|ico|xml|txt|woff2?|ttf|eot|otf)$/i
+
 function isPublicRoute(pathname: string): boolean {
     if (PUBLIC_ROUTES.has(pathname)) return true
     if (pathname.startsWith('/blog/')) return true
@@ -20,7 +23,7 @@ function isPublicRoute(pathname: string): boolean {
     if (pathname.startsWith('/api/')) return true
     if (pathname.startsWith('/_next/')) return true
     if (pathname.startsWith('/favicon')) return true
-    if (pathname.includes('.')) return true
+    if (STATIC_ASSET_EXTENSIONS.test(pathname)) return true
     return false
 }
 
@@ -54,11 +57,12 @@ async function handlePublicRoute(supabase: ReturnType<typeof createServerClient>
         if (user) {
             const { data: profile } = await supabase
                 .from('profiles')
-                .select('is_onboarded')
+                .select('is_onboarded, is_banned')
                 .eq('id', user.id)
                 .single()
 
-            if (profile?.is_onboarded) {
+            // Only redirect to /app/feed if onboarded AND not banned
+            if (profile?.is_onboarded && !profile?.is_banned) {
                 return NextResponse.redirect(new URL('/app/feed', requestUrl))
             }
         }
@@ -91,18 +95,26 @@ export async function proxy(request: NextRequest) {
         return NextResponse.redirect(loginUrl)
     }
 
+    // Fetch profile once for all authenticated route checks
+    const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('is_onboarded, role, is_banned')
+        .eq('id', user.id)
+        .single()
+
+    // If profile fetch fails, deny access
+    if (profileError || !profile) {
+        console.error('Profile fetch error:', profileError?.message ?? 'Profile not found')
+        return NextResponse.redirect(new URL('/', request.url))
+    }
+
+    // Ban check applies to all authenticated routes (including /onboarding)
+    if (profile.is_banned) {
+        return NextResponse.redirect(new URL('/', request.url))
+    }
+
     if (pathname.startsWith('/app/') || pathname === '/app') {
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('is_onboarded, role, is_banned')
-            .eq('id', user.id)
-            .single()
-
-        if (profile?.is_banned) {
-            return NextResponse.redirect(new URL('/', request.url))
-        }
-
-        if (profile && !profile.is_onboarded) {
+        if (!profile.is_onboarded) {
             return NextResponse.redirect(new URL('/onboarding', request.url))
         }
     }
@@ -112,13 +124,7 @@ export async function proxy(request: NextRequest) {
     }
 
     if (pathname.startsWith('/admin')) {
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', user.id)
-            .single()
-
-        if (profile?.role !== 'admin') {
+        if (profile.role !== 'admin') {
             return NextResponse.redirect(new URL('/app/feed', request.url))
         }
     }
