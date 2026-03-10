@@ -50,7 +50,7 @@ export function CTABanner() {
             size="lg"
             asChild
             variant="outline"
-            className="border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-foreground font-medium px-6 md:px-8 h-12 md:h-14 rounded-full text-sm md:text-base transition-all hover:scale-[1.03] active:scale-[0.97] w-full sm:w-auto"
+            className="border-white/10 hover:border-white/30 bg-white/5 hover:bg-white/15 text-white font-medium px-6 md:px-8 h-12 md:h-14 rounded-full text-sm md:text-base transition-all hover:scale-[1.03] active:scale-[0.97] w-full sm:w-auto"
           >
             <Link href="/demo">
               <CalendarDays className="mr-2 w-4 md:w-5 h-4 md:h-5" />

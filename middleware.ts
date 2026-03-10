@@ -55,7 +55,21 @@ export async function middleware(request: NextRequest) {
     // Allow public routes
     if (isPublicRoute(pathname)) {
         // Still refresh the session even on public routes
-        await supabase.auth.getUser()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        // If user is authenticated and tries to access marketing/auth pages, redirect to app
+        if (user && (pathname === '/' || pathname === '/login' || pathname === '/signup')) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('is_onboarded')
+                .eq('id', user.id)
+                .single()
+
+            if (profile?.is_onboarded) {
+                return NextResponse.redirect(new URL('/app/feed', request.url))
+            }
+        }
+
         return supabaseResponse
     }
 

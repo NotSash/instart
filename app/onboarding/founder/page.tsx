@@ -87,9 +87,14 @@ export default function FounderOnboarding() {
       setValidationError('Please select your startup stage')
       return
     }
-    if (step === 4 && isRaising === null) {
-      setValidationError('Please indicate if you are currently raising')
-      return
+    if (step === 4) {
+      if (isRaising === null) { setValidationError('Please indicate if you are currently raising'); return }
+      if (isRaising) {
+        if (!raiseAmount.trim()) { setValidationError('Please enter how much you are looking to raise'); return }
+        if (roundType.length === 0) { setValidationError('Please select the type of round'); return }
+      }
+      if (hasRaisedBefore === null) { setValidationError('Please indicate if you have raised before'); return }
+      if (hasRaisedBefore && !previousRaise.trim()) { setValidationError('Please enter how much you have raised in total'); return }
     }
     if (step === 5 && selectedInvestorTypes.length === 0) {
       setValidationError('Please select at least one investor type')
@@ -138,7 +143,7 @@ export default function FounderOnboarding() {
       setValidationError(result.error)
       return
     }
-    router.push('/app/feed')
+    window.location.href = '/app/feed'
   }
 
   const toggleSector = (s: string) => {

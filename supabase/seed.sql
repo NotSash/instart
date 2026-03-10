@@ -8,6 +8,10 @@
 -- 0. CLEANUP (Run every time to ensure fresh state)
 -- ═════════════════════════════════════════════
 -- Wipe test data from all tables before seeding
+DELETE FROM blog_posts WHERE author_id::text LIKE 'a1000000%';
+DELETE FROM notifications WHERE user_id::text LIKE 'a1000000%';
+DELETE FROM subscriptions WHERE user_id::text LIKE 'a1000000%';
+DELETE FROM notification_preferences WHERE user_id::text LIKE 'a1000000%';
 DELETE FROM comments;
 DELETE FROM post_votes;
 DELETE FROM posts;
@@ -436,6 +440,107 @@ INSERT INTO match_scores (founder_id, investor_id, score, factors) VALUES
   ('a1000000-0000-0000-0000-000000000008', 'a1000000-0000-0000-0000-000000000004', 85,
    '{"sector_match": 88, "stage_match": 82, "check_size_fit": 90, "thesis_alignment": 80}'::jsonb)
 ON CONFLICT (founder_id, investor_id) DO NOTHING;
+
+
+-- ─────────── SUBSCRIPTIONS ───────────
+
+INSERT INTO subscriptions (user_id, plan, status) VALUES
+  ('a1000000-0000-0000-0000-000000000001', 'free', 'active'),
+  ('a1000000-0000-0000-0000-000000000002', 'free', 'active'),
+  ('a1000000-0000-0000-0000-000000000003', 'pro', 'active'),
+  ('a1000000-0000-0000-0000-000000000004', 'free', 'active'),
+  ('a1000000-0000-0000-0000-000000000005', 'free', 'active'),
+  ('a1000000-0000-0000-0000-000000000006', 'free', 'active'),
+  ('a1000000-0000-0000-0000-000000000007', 'pro', 'active'),
+  ('a1000000-0000-0000-0000-000000000008', 'free', 'active')
+ON CONFLICT (user_id) DO NOTHING;
+
+
+-- ─────────── NOTIFICATION PREFERENCES ───────────
+
+INSERT INTO notification_preferences (user_id) VALUES
+  ('a1000000-0000-0000-0000-000000000001'),
+  ('a1000000-0000-0000-0000-000000000002'),
+  ('a1000000-0000-0000-0000-000000000003'),
+  ('a1000000-0000-0000-0000-000000000004'),
+  ('a1000000-0000-0000-0000-000000000005'),
+  ('a1000000-0000-0000-0000-000000000006'),
+  ('a1000000-0000-0000-0000-000000000007'),
+  ('a1000000-0000-0000-0000-000000000008')
+ON CONFLICT (user_id) DO NOTHING;
+
+
+-- ─────────── NOTIFICATIONS ───────────
+
+INSERT INTO notifications (user_id, type, title, message, link, actor_id, is_read, created_at) VALUES
+  -- Ravi gets connection request from Arjun
+  ('a1000000-0000-0000-0000-000000000001', 'connection_accepted', 'Connection accepted',
+   'Arjun Patel accepted your connection request.', '/app/profile/a1000000-0000-0000-0000-000000000003',
+   'a1000000-0000-0000-0000-000000000003', true, now() - interval '29 days'),
+  -- Ravi gets post upvoted notification
+  ('a1000000-0000-0000-0000-000000000001', 'post_upvoted', 'Your post was upvoted',
+   'Arjun Patel upvoted your post "What metrics do seed-stage investors actually care about?"', '/app/communities/general',
+   'a1000000-0000-0000-0000-000000000003', false, now() - interval '4 days'),
+  -- Ravi gets comment notification
+  ('a1000000-0000-0000-0000-000000000001', 'post_commented', 'New comment on your post',
+   'Arjun Patel commented on your post about seed-stage metrics.', '/app/communities/general',
+   'a1000000-0000-0000-0000-000000000003', false, now() - interval '4 days'),
+  -- Priya gets investor match
+  ('a1000000-0000-0000-0000-000000000002', 'new_investor_in_sector', 'New investor match',
+   'Neha Gupta (Angel Investor) is interested in AgriTech startups like yours.', '/app/explore/investors',
+   'a1000000-0000-0000-0000-000000000004', false, now() - interval '10 days'),
+  -- Priya gets post comment notification
+  ('a1000000-0000-0000-0000-000000000002', 'post_commented', 'New comment on your fundraising post',
+   'Ravi Kumar commented: "Congrats Priya! Would love to see the deck structure."', '/app/communities/fundraising',
+   'a1000000-0000-0000-0000-000000000001', true, now() - interval '6 days'),
+  -- Deepika gets profile view notification
+  ('a1000000-0000-0000-0000-000000000008', 'profile_viewed', 'Someone viewed your profile',
+   'Arjun Patel (Partner, Horizon Ventures) viewed your LearnSpark profile.', '/app/profile-viewers',
+   'a1000000-0000-0000-0000-000000000003', false, now() - interval '1 day'),
+  -- Deepika gets comment notification
+  ('a1000000-0000-0000-0000-000000000008', 'post_commented', 'New comment on your launch post',
+   'Arjun Patel wants to connect — "Incredible retention numbers! This could be a Horizon Ventures fit."', '/app/communities/show-and-tell',
+   'a1000000-0000-0000-0000-000000000003', false, now() - interval '1 day 18 hours'),
+  -- Vikram gets connection accepted
+  ('a1000000-0000-0000-0000-000000000005', 'connection_accepted', 'Connection accepted',
+   'Ravi Kumar accepted your connection request.', '/app/profile/a1000000-0000-0000-0000-000000000001',
+   'a1000000-0000-0000-0000-000000000001', true, now() - interval '14 days'),
+  -- System notification for all about new community
+  ('a1000000-0000-0000-0000-000000000001', 'system', 'Welcome to Instart!',
+   'Your profile is live. Start exploring startups, investors, and communities.', '/app/feed',
+   NULL, true, now() - interval '60 days'),
+  ('a1000000-0000-0000-0000-000000000003', 'system', 'Welcome to Instart!',
+   'Your investor profile is live. Start discovering promising startups.', '/app/explore/startups',
+   NULL, true, now() - interval '90 days');
+
+
+-- ─────────── BLOG POSTS ───────────
+
+INSERT INTO blog_posts (id, author_id, title, slug, content, excerpt, category, is_published, published_at, reading_time_minutes) VALUES
+  ('bb000000-0000-0000-0000-000000000001',
+   'a1000000-0000-0000-0000-000000000007',
+   'The Ultimate Guide to Raising Your First Round in India (2025)',
+   'guide-raising-first-round-india-2025',
+   E'# The Ultimate Guide to Raising Your First Round in India\n\nRaising your first round of funding is one of the most challenging — and rewarding — experiences for any founder. In this guide, we break down everything you need to know about fundraising in the Indian startup ecosystem in 2025.\n\n## The Current Landscape\n\nIndia\'s startup ecosystem has matured significantly. In 2024, over $10B was deployed across 1,200+ deals. The average seed round has grown to ₹2-5 Cr, and the pre-seed market has exploded with 50+ active micro-VCs.\n\n## When to Start Raising\n\n**The golden rule:** Start raising 6 months before you need the money.\n\n- Pre-seed: You have a validated problem and an MVP\n- Seed: You have early traction (users, revenue, or strong engagement)\n- Series A: You have proven unit economics and a clear path to scale\n\n## Building Your Pitch Deck\n\nYour deck should be 10-12 slides maximum:\n\n1. **Problem** — Show you deeply understand the pain\n2. **Solution** — Your unique approach\n3. **Market Size** — TAM, SAM, SOM (be specific to India)\n4. **Traction** — Metrics that matter\n5. **Business Model** — How you make money\n6. **Competition** — Honest competitive landscape\n7. **Team** — Why YOU are the right team\n8. **Financials** — Projections and unit economics\n9. **Ask** — How much and what you\'ll do with it\n\n## Common Mistakes\n\n- Raising too early (before you have signal)\n- Raising too little (leaves you scrambling in 6 months)\n- Not having a lead investor strategy\n- Ignoring angel investors for institutional VCs only\n\n## Top Tips from Experienced Founders\n\n> "The best fundraise I ever did was when I wasn\'t desperate for money. Build leverage by having options." — Ravi Kumar, PayBridge',
+   'A comprehensive breakdown of how to raise your first round in India — from timing and pitch decks to common mistakes and proven strategies.',
+   'Fundraising', true, now() - interval '14 days', 8),
+
+  ('bb000000-0000-0000-0000-000000000002',
+   'a1000000-0000-0000-0000-000000000007',
+   '10 Lessons from India''s Most Successful Startup Pivots',
+   '10-lessons-successful-startup-pivots',
+   E'# 10 Lessons from India\'s Most Successful Startup Pivots\n\nSome of India\'s biggest success stories started as something completely different. Here are the pivots that defined a generation of startups — and what you can learn from them.\n\n## 1. Flexibility is Not Failure\n\nThe most successful founders are the ones who listen to the market. Pivoting isn\'t giving up — it\'s adapting to reality.\n\n## 2. Keep Your Core Team Intact\n\nA pivot works best when the team stays aligned. The relationships and trust you\'ve built are your most valuable asset.\n\n## 3. Validate Before You Pivot\n\nDon\'t pivot on a hunch. Talk to 50 customers, run experiments, and look for the signal in the noise.\n\n## 4. Your First Idea Is Rarely Your Best\n\nStatistically, most successful startups pivoted at least once. Don\'t fall in love with your first idea.\n\n## 5. Timing Matters More Than You Think\n\nSometimes the pivot is not what you build, but when you build it. Market timing is everything.\n\n## 6-10 and more...\n\nRead the full analysis with case studies from Flipkart, Razorpay, and other Indian unicorns on our blog.',
+   'From Flipkart to Razorpay — the pivots that built billion-dollar companies and what early-stage founders can learn from them.',
+   'Strategy', true, now() - interval '7 days', 6),
+
+  ('bb000000-0000-0000-0000-000000000003',
+   'a1000000-0000-0000-0000-000000000007',
+   'Co-founder Matching: How to Find Your Startup Soulmate',
+   'cofounder-matching-startup-soulmate',
+   E'# Co-founder Matching: How to Find Your Startup Soulmate\n\nFinding the right co-founder is often compared to finding a life partner — and for good reason. You\'ll spend more time with them than almost anyone else, navigate intense pressure together, and make decisions that affect both your futures.\n\n## Why Co-founders Matter\n\n- 65% of startup failures cite co-founder conflict as a major factor\n- YC-backed companies with 2+ founders raise 30% more on average\n- Solo founders take 3.6x longer to reach scale\n\n## What to Look For\n\n### Complementary Skills\nDon\'t find a clone of yourself. If you\'re technical, find a business person. If you\'re a visionary, find an executor.\n\n### Aligned Values\nSkills can be learned. Values can\'t. Make sure you agree on: work ethic, risk tolerance, equity expectations, and long-term vision.\n\n### Communication Style\nCan you disagree productively? The best co-founder relationships thrive on healthy conflict.\n\n## The Trial Period\n\nBefore making it official, work on a small project together for 2-4 weeks. This reveals:\n- How they handle stress\n- Whether they follow through\n- If you enjoy working together\n\n## Using Instart to Find Co-founders\n\nOur co-founder matching algorithm considers skills, interests, commitment level, and equity expectations to find your ideal match.',
+   'A data-driven guide on finding the perfect co-founder — from what to look for, to how to test the relationship before committing.',
+   'Co-founders', true, now() - interval '3 days', 5)
+ON CONFLICT (id) DO NOTHING;
 
 
 -- ═══════════════════════════════════════════════════════════════

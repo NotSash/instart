@@ -110,7 +110,7 @@ export default function InvestorOnboarding() {
             setValidationError(result.error)
             return
         }
-        router.push('/app/explore/startups')
+        window.location.href = '/app/explore/startups'
     }
 
     const toggleSector = (s: string) => {

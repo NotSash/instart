@@ -131,7 +131,7 @@ export default function CofounderOnboarding() {
             setValidationError(result.error)
             return
         }
-        router.push('/app/explore/cofounders')
+        window.location.href = '/app/explore/cofounders'
     }
 
     const toggleSkill = (list: string[], setList: (v: string[]) => void, s: string) => {
