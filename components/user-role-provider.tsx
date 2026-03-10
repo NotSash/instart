@@ -35,7 +35,10 @@ export function UserRoleProvider({ children }: { children: ReactNode }) {
                         .eq('id', user.id)
                         .single()
                     if (profile?.role) {
-                        setRole(profile.role as UserRole)
+                        const allowedRoles: UserRole[] = ['founder', 'investor', 'cofounder_seeker', 'browser', 'admin']
+                        if (allowedRoles.includes(profile.role as UserRole)) {
+                            setRole(profile.role as UserRole)
+                        }
                     }
                 }
             } catch {

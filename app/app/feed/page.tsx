@@ -361,7 +361,7 @@ export default function FeedPage() {
                             ) : (
                                 <div className="space-y-3">
                                     {trendingStartups.map((s: PostRow, i: number) => (
-                                        <div key={s.id} className="flex items-center gap-3 group cursor-pointer">
+                                        <div key={s.id} className="flex items-center gap-3 group cursor-pointer" onClick={() => router.push(`/app/startup/${s.id}`)}>
                                             <span className="text-lg font-bold text-muted-foreground w-6">{i + 1}</span>
                                             <div className="flex-1">
                                                 <p className="text-sm font-medium text-foreground group-hover:text-emerald-400 transition-colors">{s.startup_name}</p>

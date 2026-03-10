@@ -177,7 +177,7 @@ export function AppLayout({ children, currentPage, userRole: userRoleProp }: App
           {sidebarOpen && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">{userName || 'User'}</p>
-              <p className="text-xs text-muted-foreground truncate capitalize">{activeRole.replace('_', ' ')}</p>
+              <p className="text-xs text-muted-foreground truncate capitalize">{activeRole.split('_').join(' ')}</p>
             </div>
           )}
           <div className="relative">
