@@ -162,7 +162,7 @@ export function Pricing() {
             <motion.div
               key={plan.name}
               variants={itemVariants}
-              className={`relative rounded-3xl overflow-hidden p-8 md:p-10 transition-all duration-400 ${plan.popular
+              className={`relative rounded-3xl overflow-hidden p-8 md:p-10 transition-all duration-300 ${plan.popular
                 ? "glass-accent border-2 border-emerald-500/40 md:scale-[1.05] z-10 card-hover"
                 : "glass-card card-hover"
                 }`}
@@ -244,13 +244,13 @@ export function Pricing() {
                     globalThis.location.href = '/signup'
                   }
                 }}
-                className={`w-full h-12 md:h-13 rounded-full font-semibold transition-all hover:scale-105 active:scale-95 text-sm md:text-base group ${plan.popular
+                className={`w-full h-12 md:h-14 rounded-full font-semibold transition-all hover:scale-105 active:scale-95 text-sm md:text-base group ${plan.popular
                   ? "bg-emerald-500 hover:bg-emerald-600 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_40px_rgba(16,185,129,0.4)]"
                   : "bg-white/10 hover:bg-white/15 border border-white/20 hover:border-white/30 text-foreground backdrop-blur-sm"
                   }`}
               >
                 {plan.cta}
-                <ArrowRight className="ml-2 w-4 md:w-4.5 h-4 md:h-4.5 transition-transform group-hover:translate-x-1 duration-300" />
+                <ArrowRight className="ml-2 w-4 md:w-5 h-4 md:h-5 transition-transform group-hover:translate-x-1 duration-300" />
               </Button>
             </motion.div>
           ))

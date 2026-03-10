@@ -58,7 +58,7 @@ export function HowItWorks() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 md:mb-24"
         >
-          <p className="text-xs md:text-sm text-emerald-400 font-semibold tracking-widest uppercase mb-3 md:mb-4 letter-spacing">
+          <p className="text-xs md:text-sm text-emerald-400 font-semibold tracking-widest uppercase mb-3 md:mb-4">
             How It Works
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 md:mb-8 max-w-xl md:max-w-3xl mx-auto" style={{ letterSpacing: "-0.03em" }}>
@@ -77,7 +77,7 @@ export function HowItWorks() {
           className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 relative"
         >
           {/* Connecting line (desktop) */}
-          <div className="absolute top-20 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent hidden md:block" />
+          <div className="absolute top-20 left-[16.666%] right-[16.666%] h-0.5 bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent hidden md:block" />
 
           {steps.map((step, index) => (
             <motion.div
@@ -85,9 +85,9 @@ export function HowItWorks() {
               variants={itemVariants}
               className="relative group"
             >
-              <div className="glass-card p-8 md:p-10 h-full hover:border-emerald-500/40 hover:bg-emerald-500/6 transition-all duration-400 card-hover">
+              <div className="glass-card p-8 md:p-10 h-full hover:border-emerald-500/40 hover:bg-emerald-500/5 transition-all duration-300 card-hover">
                 {/* Icon container */}
-                <div className="w-14 md:w-18 h-14 md:h-18 rounded-2xl md:rounded-3xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/25 flex items-center justify-center mb-6 md:mb-8 group-hover:from-emerald-500/30 group-hover:to-emerald-500/10 group-hover:border-emerald-500/50 transition-all duration-300">
+                <div className="w-14 md:w-20 h-14 md:h-20 rounded-2xl md:rounded-3xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/25 flex items-center justify-center mb-6 md:mb-8 group-hover:from-emerald-500/30 group-hover:to-emerald-500/10 group-hover:border-emerald-500/50 transition-all duration-300">
                   <step.icon className="w-6 md:w-8 h-6 md:h-8 text-emerald-400" />
                 </div>
 

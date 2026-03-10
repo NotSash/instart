@@ -111,7 +111,7 @@ export function Hero() {
           <Button
             asChild
             size="lg"
-            className="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-8 md:px-10 h-13 md:h-15 rounded-full text-sm md:text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(16,185,129,0.35)] hover:shadow-[0_0_60px_rgba(16,185,129,0.45)] w-full sm:w-auto group"
+            className="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-8 md:px-10 h-14 md:h-16 rounded-full text-sm md:text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(16,185,129,0.35)] hover:shadow-[0_0_60px_rgba(16,185,129,0.45)] w-full sm:w-auto group"
           >
             <Link href="/signup">
               Start Free Trial
@@ -122,7 +122,7 @@ export function Hero() {
             size="lg"
             asChild
             variant="outline"
-            className="border-white/20 hover:border-white/40 bg-white/8 hover:bg-white/12 text-foreground hover:text-foreground font-medium px-8 md:px-10 h-13 md:h-15 rounded-full text-sm md:text-base transition-all hover:scale-105 active:scale-95 backdrop-blur-sm w-full sm:w-auto group"
+            className="border-white/20 hover:border-white/40 bg-white/8 hover:bg-white/12 text-foreground hover:text-foreground font-medium px-8 md:px-10 h-14 md:h-16 rounded-full text-sm md:text-base transition-all hover:scale-105 active:scale-95 backdrop-blur-sm w-full sm:w-auto group"
           >
             <Link href="/demo">
               <span>Watch Demo</span>
