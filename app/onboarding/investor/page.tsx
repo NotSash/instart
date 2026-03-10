@@ -3,7 +3,6 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     ChevronLeft, Camera, MapPin, ChevronRight, Check, Sparkles,
@@ -38,7 +37,6 @@ interface PortfolioItem {
 }
 
 export default function InvestorOnboarding() {
-    useRouter()
     const [step, setStep] = useState(1)
     const [direction, setDirection] = useState(1)
     const [validationError, setValidationError] = useState('')

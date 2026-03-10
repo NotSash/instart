@@ -22,7 +22,7 @@ const stageLabels: Record<string, string> = {
 type StartupRow = any
 
 function ScoreBadge({ score }: Readonly<{ score: number | null }>) {
-    if (!score) return null
+    if (score == null) return null
     const color = score >= 80 ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10' : score >= 60 ? 'text-amber-400 border-amber-500/30 bg-amber-500/10' : 'text-red-400 border-red-500/30 bg-red-500/10'
     return (
         <div className={`w-10 h-10 rounded-full border flex items-center justify-center text-sm font-bold ${color}`}>

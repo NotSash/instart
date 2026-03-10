@@ -6,7 +6,18 @@ import { useInView } from "react-intersection-observer"
 import { Check, X, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-const plans = [
+interface PlanType {
+  name: string
+  description: string
+  monthlyPrice: number | null
+  yearlyPrice: number | null
+  popular: boolean
+  features: { text: string; included: boolean }[]
+  cta: string
+  ctaVariant: 'default' | 'outline'
+}
+
+const plans: PlanType[] = [
   {
     name: "Free",
     description: "For early-stage founders exploring the ecosystem",
@@ -170,18 +181,23 @@ export function Pricing() {
                 </p>
 
                 {/* Price */}
-                <div className="flex items-baseline gap-1 md:gap-2">
-                  {plan.monthlyPrice === null ? (
-                    <span className="text-3xl md:text-4xl font-bold text-foreground">Custom</span>
-                  ) : (
-                    <>
-                      <span className="text-3xl md:text-4xl font-bold text-foreground">
-                        ₹{isYearly ? plan.yearlyPrice?.toLocaleString() : plan.monthlyPrice.toLocaleString()}
-                      </span>
-                      <span className="text-muted-foreground text-sm">/month</span>
-                    </>
-                  )}
-                </div>
+                {(() => {
+                  const price = plan.monthlyPrice === null ? null : (isYearly ? (plan.yearlyPrice ?? plan.monthlyPrice) : plan.monthlyPrice)
+                  return (
+                    <div className="flex items-baseline gap-1 md:gap-2">
+                      {price === null ? (
+                        <span className="text-3xl md:text-4xl font-bold text-foreground">Custom</span>
+                      ) : (
+                        <>
+                          <span className="text-3xl md:text-4xl font-bold text-foreground">
+                            ₹{price.toLocaleString()}
+                          </span>
+                          <span className="text-muted-foreground text-sm">/month</span>
+                        </>
+                      )}
+                    </div>
+                  )
+                })()}
                 {plan.monthlyPrice !== null && plan.monthlyPrice > 0 && isYearly && (
                   <p className="text-xs md:text-sm text-emerald-400 mt-2">
                     Billed annually (save ₹{((plan.monthlyPrice - (plan.yearlyPrice ?? 0)) * 12).toLocaleString()}/year)

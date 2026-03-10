@@ -181,6 +181,7 @@ export default function SettingsPage() {
                                     <div className="glass-card p-6">
                                         <h3 className="text-lg font-semibold text-foreground mb-4">Change Password</h3>
                                         <div className="flex gap-3">
+                                            <label htmlFor="settingsPassword" className="sr-only">New Password</label>
                                             <input id="settingsPassword" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="New password (min 6 chars)"
                                                 className="flex-1 h-10 px-4 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm focus:outline-none focus:border-emerald-500/50 transition-all" />
                                             <Button onClick={handleChangePassword} variant="outline" className="border-white/10">Update</Button>

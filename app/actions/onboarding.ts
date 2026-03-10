@@ -11,8 +11,9 @@ type CommitmentLevel = Enums<'commitment_level'>
 // ─── Helper to parse numeric strings (can be currency amounts) ───
 function parseAmount(val: string | undefined): number | null {
     if (!val || val === '') return null
-    const num = Number.parseInt(val.replaceAll(/\D/g, ''), 10)
-    return Number.isNaN(num) ? null : num * 100 // convert to paisa
+    const cleaned = val.replaceAll(/[^0-9.]/g, '')
+    const num = Number.parseFloat(cleaned)
+    return Number.isNaN(num) ? null : Math.round(num * 100) // convert to paisa
 }
 
 function parseNum(val: string | undefined): number | null {

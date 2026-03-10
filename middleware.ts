@@ -46,17 +46,21 @@ function createSupabaseClient(request: NextRequest, url: string, anonKey: string
 }
 
 async function handlePublicRoute(supabase: ReturnType<typeof createServerClient>, pathname: string, requestUrl: string, getResponse: () => NextResponse) {
-    const { data: { user } } = await supabase.auth.getUser()
+    const needsUserCheck = pathname === '/' || pathname === '/login' || pathname === '/signup'
 
-    if (user && (pathname === '/' || pathname === '/login' || pathname === '/signup')) {
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('is_onboarded')
-            .eq('id', user.id)
-            .single()
+    if (needsUserCheck) {
+        const { data: { user } } = await supabase.auth.getUser()
 
-        if (profile?.is_onboarded) {
-            return NextResponse.redirect(new URL('/app/feed', requestUrl))
+        if (user) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('is_onboarded')
+                .eq('id', user.id)
+                .single()
+
+            if (profile?.is_onboarded) {
+                return NextResponse.redirect(new URL('/app/feed', requestUrl))
+            }
         }
     }
 

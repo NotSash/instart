@@ -17,11 +17,6 @@ function Table({ className, ...props }: React.ComponentProps<'table'>) {
         className={cn('w-full caption-bottom text-sm', className)}
         {...props}
       >
-        <thead className="sr-only">
-          <tr>
-            <th>Data Table Head</th>
-          </tr>
-        </thead>
         {props.children}
       </table>
     </div>

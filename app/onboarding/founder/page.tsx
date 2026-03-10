@@ -3,7 +3,6 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronLeft, Camera, MapPin, Globe, ChevronRight,
@@ -35,7 +34,6 @@ const indianCities = [
 ]
 
 export default function FounderOnboarding() {
-  useRouter()
   const [step, setStep] = useState(1)
   const [direction, setDirection] = useState(1)
 
