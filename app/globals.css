@@ -28,7 +28,7 @@
   --input: oklch(0.15 0 0);
   --ring: oklch(0.696 0.17 162.48);
   --radius: 0.75rem;
-  
+
   /* Custom colors */
   --emerald: oklch(0.696 0.17 162.48);
   --cyan: oklch(0.7 0.15 195);
@@ -39,7 +39,7 @@
   --text-muted: oklch(0.5 0 0);
   --glass-border: oklch(1 0 0 / 0.06);
   --glass-bg: oklch(1 0 0 / 0.03);
-  
+
   /* Sidebar */
   --sidebar: oklch(0.1 0 0);
   --sidebar-foreground: oklch(0.96 0 0);
@@ -117,9 +117,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
     background-color: #050505;
@@ -128,19 +130,20 @@
 }
 
 @layer utilities {
+
   /* Glassmorphism */
   .glass {
     @apply backdrop-blur-2xl border;
     background: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.06);
   }
-  
+
   .glass-card {
     @apply backdrop-blur-xl border rounded-2xl;
     background: rgba(255, 255, 255, 0.02);
     border-color: rgba(255, 255, 255, 0.06);
   }
-  
+
   /* Text styles */
   .text-gradient {
     @apply bg-clip-text text-transparent;
@@ -148,49 +151,49 @@
     background-size: 200% 200%;
     animation: gradient-shift 6s ease infinite;
   }
-  
+
   .heading-xl {
     @apply text-4xl md:text-6xl lg:text-7xl font-bold;
     letter-spacing: -0.03em;
     line-height: 1.05;
   }
-  
+
   .heading-lg {
     @apply text-3xl md:text-4xl lg:text-5xl font-bold;
     letter-spacing: -0.03em;
     line-height: 1.1;
   }
-  
+
   .heading-md {
     @apply text-2xl md:text-3xl font-semibold;
     letter-spacing: -0.02em;
   }
-  
+
   .body-lg {
     @apply text-lg md:text-xl;
     line-height: 1.6;
     color: rgba(161, 161, 170, 1);
   }
-  
+
   .body-md {
     @apply text-base;
     line-height: 1.6;
     color: rgba(161, 161, 170, 1);
   }
-  
+
   /* Glow effects */
   .glow-emerald {
     box-shadow: 0 0 60px rgba(16, 185, 129, 0.15);
   }
-  
+
   .glow-emerald-sm {
     box-shadow: 0 0 30px rgba(16, 185, 129, 0.1);
   }
-  
+
   .border-glow-emerald {
     box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.15);
   }
-  
+
   /* Noise texture overlay */
   .noise-overlay::before {
     content: '';
@@ -205,9 +208,12 @@
 
 /* Animations */
 @keyframes gradient-shift {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -217,24 +223,31 @@
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.4;
   }
+
   50% {
     opacity: 1;
   }
@@ -244,6 +257,7 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -253,6 +267,7 @@
   0% {
     transform: translateY(0);
   }
+
   100% {
     transform: translateY(-20px);
   }
@@ -260,12 +275,10 @@
 
 .animate-shimmer {
   animation: shimmer 2s linear infinite;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0) 100%);
   background-size: 200% 100%;
 }
 
@@ -287,6 +300,7 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
